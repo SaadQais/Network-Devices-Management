@@ -1,0 +1,43 @@
+﻿@if (!User.Identity.IsAuthenticated)
+{
+    <div class="sidebar" data-color="purple" data-background-color="white" data-image="../creative-tim/assets/img/sidebar-3.jpg">
+        <!--
+            Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
+
+            Tip 2: you can also add an image using data-image tag
+        -->
+        <div class="logo">
+            <a href="#" class="simple-text logo-normal">
+                Networks Management
+            </a>
+        </div>
+        <div class="sidebar-wrapper">
+            <ul class="nav">
+                <li class="nav-item @(ViewBag.Current == "Dashboard" ? "active" : "")">
+                    <a class="nav-link" asp-controller="Home" asp-action="Index">
+                        <i class="material-icons">dashboard</i>
+                        <p>Dashboard</p>
+                    </a>
+                </li>
+                <li class="nav-item @(ViewBag.Current == "ManageUsers" ? "active" : "")">
+                    <a class="nav-link" asp-controller="ManageUsers" asp-action="Index">
+                        <i class="material-icons">group</i>
+                        <p>Users</p>
+                    </a>
+                </li>
+                <li class="nav-item @(ViewBag.Current == "Groups" ? "active" : "")">
+                    <a class="nav-link" asp-controller="Groups" asp-action="Index">
+                        <i class="material-icons">group_work</i>
+                        <p>Groups</p>
+                    </a>
+                </li>
+                <li class="nav-item @(ViewBag.Current == "Locations" ? "active" : "")">
+                    <a class="nav-link" asp-controller="Locations" asp-action="Index">
+                        <i class="material-icons">my_location</i>
+                        <p>Locations</p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+}
