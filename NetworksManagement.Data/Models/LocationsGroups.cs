@@ -8,7 +8,6 @@ namespace NetworksManagement.Data.Models
     public class LocationsGroups
     {
         public int Id { get; set; }
-
         public int LocationId { get; set; }
 
         [ForeignKey("LocationId")]

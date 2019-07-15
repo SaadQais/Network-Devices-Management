@@ -21,7 +21,7 @@ namespace NetworksManagement.Infrastructure
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Group> GetAll()
+        public IQueryable<Group> GetAll()
         {
             var groups = _context.Groups.OrderBy(g => g.Name);
 

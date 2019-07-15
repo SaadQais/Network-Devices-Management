@@ -1,0 +1,13 @@
+﻿@model int
+
+<td class="td-actions text-right">
+    <a href="@Url.Action("Details", new { id = Model } )" rel="tooltip" class="btn btn-info">
+        <i class="material-icons">details</i>
+    </a>
+    <a href="@Url.Action("Edit", new { id = Model } )" rel="tooltip" class="btn btn-success">
+        <i class="material-icons">edit</i>
+    </a>
+    <a href="@Url.Action("Delete", new { id = Model } )" rel="tooltip" class="btn btn-danger">
+        <i class="material-icons">close</i>
+    </a>
+</td>

@@ -25,16 +25,16 @@
                         <p>Users</p>
                     </a>
                 </li>
-                <li class="nav-item @(ViewBag.Current == "Groups" ? "active" : "")">
-                    <a class="nav-link" asp-controller="Groups" asp-action="Index">
-                        <i class="material-icons">group_work</i>
-                        <p>Groups</p>
-                    </a>
-                </li>
                 <li class="nav-item @(ViewBag.Current == "Locations" ? "active" : "")">
                     <a class="nav-link" asp-controller="Locations" asp-action="Index">
                         <i class="material-icons">my_location</i>
                         <p>Locations</p>
+                    </a>
+                </li>
+                <li class="nav-item @(ViewBag.Current == "Groups" ? "active" : "")">
+                    <a class="nav-link" asp-controller="Groups" asp-action="Index">
+                        <i class="material-icons">group_work</i>
+                        <p>Groups</p>
                     </a>
                 </li>
             </ul>

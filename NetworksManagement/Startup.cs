@@ -43,6 +43,7 @@ namespace NetworksManagement
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddScoped<ILocationsRepository, LocationsRepository>();
+            services.AddScoped<IGroupsRepository, GroupsRepository>();
 
             services.AddControllersWithViews()
                 .AddNewtonsoftJson();

@@ -26,5 +26,23 @@ namespace NetworksManagement.Data
         public DbSet<Group> Groups { get; set; }
         public DbSet<LocationsGroups> LocationsGroups { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<LocationsGroups>()
+                .HasKey(lg => new { lg.LocationId, lg.GroupId });
+
+            modelBuilder.Entity<LocationsGroups>()
+                .HasOne(lg => lg.Location)
+                .WithMany(g => g.LocationsGroups)
+                .HasForeignKey(lo => lo.LocationId);
+
+            modelBuilder.Entity<LocationsGroups>()
+                .HasOne(lg => lg.Group)
+                .WithMany(g => g.LocationsGroups)
+                .HasForeignKey(gr => gr.GroupId);
+        }
     }
 }
