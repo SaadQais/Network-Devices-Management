@@ -10,6 +10,6 @@ namespace NetworksManagement.Data.Models
         public string Name { get; set; }
         public string IpRange { get; set; }
 
-        public ICollection<LocationsGroups> LocationsGroups { get; set; }
+        public virtual ICollection<LocationsGroups> LocationsGroups { get; set; }
     }
 }

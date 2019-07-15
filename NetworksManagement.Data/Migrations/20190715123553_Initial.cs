@@ -186,14 +186,12 @@ namespace NetworksManagement.Data.Migrations
                 name: "LocationsGroups",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     LocationId = table.Column<int>(nullable: false),
                     GroupId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LocationsGroups", x => x.Id);
+                    table.PrimaryKey("PK_LocationsGroups", x => new { x.LocationId, x.GroupId });
                     table.ForeignKey(
                         name: "FK_LocationsGroups_Groups_GroupId",
                         column: x => x.GroupId,
@@ -251,11 +249,6 @@ namespace NetworksManagement.Data.Migrations
                 name: "IX_LocationsGroups_GroupId",
                 table: "LocationsGroups",
                 column: "GroupId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_LocationsGroups_LocationId",
-                table: "LocationsGroups",
-                column: "LocationId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -42,8 +42,8 @@ namespace NetworksManagement
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddScoped<ILocationsRepository, LocationsRepository>();
-            services.AddScoped<IGroupsRepository, GroupsRepository>();
+            services.AddTransient<ILocationsRepository, LocationsRepository>();
+            services.AddTransient<IGroupsRepository, GroupsRepository>();
 
             services.AddControllersWithViews()
                 .AddNewtonsoftJson();

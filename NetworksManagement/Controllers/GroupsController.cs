@@ -27,6 +27,7 @@ namespace NetworksManagement.Controllers
             GroupVM = new GroupViewModel
             {
                 Group = new Group(),
+                Groups = new List<Group>(),
                 Locations = _context.Locations.ToList()
             };
         }
@@ -35,7 +36,9 @@ namespace NetworksManagement.Controllers
         public async Task<IActionResult> Index()
         {
             var groups = await _groupsRepository.GetAll().ToListAsync();
-            return View(groups);
+            GroupVM.Groups = groups;
+
+            return View(GroupVM);
         }
 
         // GET: Groups/Details/5
@@ -72,7 +75,20 @@ namespace NetworksManagement.Controllers
             if (ModelState.IsValid)
             {
                 _context.Add(group);
+
                 await _context.SaveChangesAsync();
+
+                foreach (var locationId in SelectedLocations)
+                {
+                    _context.LocationsGroups.Add(new LocationsGroups
+                    {
+                        LocationId = locationId,
+                        GroupId = group.Id
+                    });
+                }
+
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             return View(group);

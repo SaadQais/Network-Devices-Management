@@ -1,4 +1,4 @@
-﻿@model IEnumerable<NetworksManagement.Data.Models.Group>
+﻿@model NetworksManagement.Data.ViewModels.GroupViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -26,22 +26,24 @@
                         <table class="table">
                             <thead class=" text-primary">
                                 <tr>
-                                    <th>@Html.DisplayNameFor(m => m.FirstOrDefault().Name)</th>
-                                    <th>@Html.DisplayNameFor(m => m.FirstOrDefault().IpRange)</th>
+                                    <th>@Html.DisplayNameFor(m => m.Group.Name)</th>
+                                    <th>@Html.DisplayNameFor(m => m.Group.IpRange)</th>
                                     <th>@Html.DisplayName("Locations")</th>
                                     <th></th>
                                 </tr>
                             </thead>
 
                             <tbody>
-                                @foreach (var item in Model)
+                                @foreach (var item in Model.Groups)
                                 {
-                                <tr>
-                                    <td>@Html.DisplayFor(m => item.Name)</td>
-                                    <td>@Html.DisplayFor(m => item.IpRange)</td>
-                                    <td>@Html.DisplayFor(m => item.LocationsGroups.Select(l => l.Location).Select(l => l.Name).ToString())</td>
-                                    <partial name="_TableButtonsPartial" model="item.Id" />
-                                </tr>
+                                    
+                                    string locations = String.Join(", ", item.LocationsGroups.Select(lg => lg.Location).Select(l => l.Name));
+                                    <tr>
+                                        <td>@Html.DisplayFor(m => item.Name)</td>
+                                        <td>@Html.DisplayFor(m => item.IpRange)</td>
+                                        <td>@Html.DisplayFor(m => locations)</td>
+                                        <partial name="_TableButtonsPartial" model="item.Id" />
+                                    </tr>
                                 }
                             </tbody>
                         </table>

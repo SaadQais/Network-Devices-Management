@@ -31,18 +31,18 @@ namespace NetworksManagement.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<LocationsGroups>()
-                .HasKey(lg => new { lg.LocationId, lg.GroupId });
+            modelBuilder.Entity<LocationsGroups>(entity =>
+            {
+                entity.HasKey(e => new { e.LocationId, e.GroupId });
 
-            modelBuilder.Entity<LocationsGroups>()
-                .HasOne(lg => lg.Location)
-                .WithMany(g => g.LocationsGroups)
-                .HasForeignKey(lo => lo.LocationId);
+                entity.HasOne(d => d.Location)
+                    .WithMany(p => p.LocationsGroups)
+                    .HasForeignKey(d => d.LocationId);
 
-            modelBuilder.Entity<LocationsGroups>()
-                .HasOne(lg => lg.Group)
-                .WithMany(g => g.LocationsGroups)
-                .HasForeignKey(gr => gr.GroupId);
+                entity.HasOne(d => d.Group)
+                    .WithMany(p => p.LocationsGroups)
+                    .HasForeignKey(d => d.GroupId);
+            });
         }
     }
 }

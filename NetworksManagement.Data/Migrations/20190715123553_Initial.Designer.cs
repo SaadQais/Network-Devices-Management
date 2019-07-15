@@ -10,7 +10,7 @@ using NetworksManagement.Data;
 namespace NetworksManagement.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190715080243_Initial")]
+    [Migration("20190715123553_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -219,19 +219,13 @@ namespace NetworksManagement.Data.Migrations
 
             modelBuilder.Entity("NetworksManagement.Data.Models.LocationsGroups", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("LocationId");
 
                     b.Property<int>("GroupId");
 
-                    b.Property<int>("LocationId");
-
-                    b.HasKey("Id");
+                    b.HasKey("LocationId", "GroupId");
 
                     b.HasIndex("GroupId");
-
-                    b.HasIndex("LocationId");
 
                     b.ToTable("LocationsGroups");
                 });
@@ -299,13 +293,13 @@ namespace NetworksManagement.Data.Migrations
             modelBuilder.Entity("NetworksManagement.Data.Models.LocationsGroups", b =>
                 {
                     b.HasOne("NetworksManagement.Data.Models.Group", "Group")
-                        .WithMany()
+                        .WithMany("LocationsGroups")
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("NetworksManagement.Data.Models.Location", "Location")
-                        .WithMany()
+                        .WithMany("LocationsGroups")
                         .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

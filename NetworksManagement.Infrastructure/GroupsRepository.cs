@@ -1,4 +1,5 @@
-﻿using NetworksManagement.Core;
+﻿using Microsoft.EntityFrameworkCore;
+using NetworksManagement.Core;
 using NetworksManagement.Data;
 using NetworksManagement.Data.Models;
 using System;
@@ -23,7 +24,7 @@ namespace NetworksManagement.Infrastructure
 
         public IQueryable<Group> GetAll()
         {
-            var groups = _context.Groups.OrderBy(g => g.Name);
+            var groups = _context.Groups.Include(g => g.LocationsGroups).OrderBy(g => g.Name);
 
             return groups;
         }

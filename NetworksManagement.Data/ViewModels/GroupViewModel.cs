@@ -8,6 +8,7 @@ namespace NetworksManagement.Data.ViewModels
     public class GroupViewModel
     {
         public Group Group { get; set; }
+        public IEnumerable<Group> Groups { get; set; }
         public IEnumerable<Location> Locations { get; set; }
     }
 }
