@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace NetworksManagement.Infrastructure
 {
@@ -17,9 +18,29 @@ namespace NetworksManagement.Infrastructure
             _context = context;
         }
 
-        public void Add(Group group)
+        public async Task AddAsync(Group group, int[] locations)
         {
-            throw new NotImplementedException();
+            _context.Add(group);
+
+            await _context.SaveChangesAsync();
+
+            foreach (var locationId in locations)
+            {
+                _context.LocationsGroups.Add(new LocationsGroups
+                {
+                    LocationId = locationId,
+                    GroupId = group.Id
+                });
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<Group> GetAsync(int? groupId)
+        {
+            var group = await _context.Groups.Include(g => g.LocationsGroups).FirstOrDefaultAsync(g => g.Id == groupId);
+
+            return group;
         }
 
         public IQueryable<Group> GetAll()
@@ -28,5 +49,7 @@ namespace NetworksManagement.Infrastructure
 
             return groups;
         }
+
+
     }
 }

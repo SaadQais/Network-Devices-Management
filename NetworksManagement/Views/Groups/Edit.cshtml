@@ -1,36 +1,78 @@
-﻿@model NetworksManagement.Data.Models.Group
+﻿@model NetworksManagement.Data.ViewModels.GroupViewModel
 
 @{
     ViewData["Title"] = "Edit";
 }
 
-<h2>Edit</h2>
-
-<h4>Group</h4>
-<hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header card-header-primary">
+                <div class="row">
+                    <div class="col-6">
+                        <h3 class="card-title ">Edit  Group</h3>
+                    </div>
+                </div>
+                <br />
             </div>
-            <div class="form-group">
-                <label asp-for="IpRange" class="control-label"></label>
-                <input asp-for="IpRange" class="form-control" />
-                <span asp-validation-for="IpRange" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </form>
-    </div>
-</div>
+            <br />
+            <div class="card-body">
+                <form method="post" asp-action="Edit">
+                    <div class="p-4 border rounded">
+                        <input type="hidden" asp-for="Group.Id" />
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+                        <div class="form-group row">
+                            <div class="col-md-2">
+                                <label asp-for="Group.Name"></label>
+                            </div>
+                            <div class="col-md-5">
+                                <input asp-for="Group.Name" class="form-control" />
+                            </div>
+                            <span asp-validation-for="Group.Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-2">
+                                <label asp-for="Group.IpRange"></label>
+                            </div>
+                            <div class="col-md-5">
+                                <input asp-for="Group.IpRange" class="form-control" />
+                            </div>
+                            <span asp-validation-for="Group.IpRange" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-2">
+                                <label asp-for="Locations"></label>
+                            </div>
+                            <div class="col-md-5">
+                                @foreach (var location in Model.Locations)
+                                {
+                                    <div class="checkbox">
+                                        @if (Model.Group.LocationsGroups.Any(t => t.Location.Id == location.Id))
+                                        {
+                                            <input type="checkbox" name="SelectedLocations" value="@location.Id" checked /> @location.Name
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" name="SelectedLocations" value="@location.Id" /> @location.Name
+                                        }
+                                    </div>
+                                }
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-primary" asp-route-id="@Model.Group.Id" value="Update" />
+                            <a asp-action="Index" class="btn btn-success">Back To List</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 </div>
 

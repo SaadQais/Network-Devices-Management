@@ -32,7 +32,6 @@ namespace NetworksManagement.Controllers
             };
         }
 
-        // GET: Groups
         public async Task<IActionResult> Index()
         {
             var groups = await _groupsRepository.GetAll().ToListAsync();
@@ -41,7 +40,6 @@ namespace NetworksManagement.Controllers
             return View(GroupVM);
         }
 
-        // GET: Groups/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -49,52 +47,34 @@ namespace NetworksManagement.Controllers
                 return NotFound();
             }
 
-            var @group = await _context.Groups
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (@group == null)
+            GroupVM.Group = await _groupsRepository.GetAsync(id);
+
+            if (GroupVM.Group == null)
             {
                 return NotFound();
             }
 
-            return View(@group);
+            return View(GroupVM);
         }
 
-        // GET: Groups/Create
         public IActionResult Create()
         {
             return View(GroupVM);
         }
 
-        // POST: Groups/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,IpRange")] Group group, int[] SelectedLocations)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(group);
-
-                await _context.SaveChangesAsync();
-
-                foreach (var locationId in SelectedLocations)
-                {
-                    _context.LocationsGroups.Add(new LocationsGroups
-                    {
-                        LocationId = locationId,
-                        GroupId = group.Id
-                    });
-                }
-
-                await _context.SaveChangesAsync();
-
+                await _groupsRepository.AddAsync(group, SelectedLocations);
+               
                 return RedirectToAction(nameof(Index));
             }
             return View(group);
         }
 
-        // GET: Groups/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -102,22 +82,20 @@ namespace NetworksManagement.Controllers
                 return NotFound();
             }
 
-            var @group = await _context.Groups.FindAsync(id);
-            if (@group == null)
+            GroupVM.Group = await _groupsRepository.GetAsync(id);
+
+            if (GroupVM.Group == null)
             {
                 return NotFound();
             }
-            return View(@group);
+            return View(GroupVM);
         }
 
-        // POST: Groups/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,IpRange")] Group @group)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,IpRange")] Group group, int[] SelectedLocations)
         {
-            if (id != @group.Id)
+            if (id != group.Id)
             {
                 return NotFound();
             }
@@ -126,12 +104,12 @@ namespace NetworksManagement.Controllers
             {
                 try
                 {
-                    _context.Update(@group);
+                    _context.Update(group);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!GroupExists(@group.Id))
+                    if (!GroupExists(group.Id))
                     {
                         return NotFound();
                     }
@@ -142,10 +120,9 @@ namespace NetworksManagement.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(@group);
+            return View(group);
         }
 
-        // GET: Groups/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -163,7 +140,6 @@ namespace NetworksManagement.Controllers
             return View(@group);
         }
 
-        // POST: Groups/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
