@@ -10,7 +10,7 @@ namespace NetworksManagement.Core
     public interface IGroupsRepository
     {
         public IQueryable<Group> GetAll();
-        public void AddAsync(Group group, int[] locations);
+        public Task AddAsync(Group group, int[] locations);
         public Task<Group> GetAsync(int? groupId);
     }
 }
