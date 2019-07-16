@@ -14,21 +14,21 @@ namespace NetworksManagement.Controllers
 {
     public class GroupsController : Controller
     {
-        private readonly ApplicationDbContext _context;
         private readonly IGroupsRepository _groupsRepository;
+        private readonly ILocationsRepository _locationsRepository;
 
         [BindProperty]
         public GroupViewModel GroupVM { get; set; }
-        public GroupsController(ApplicationDbContext context, IGroupsRepository groupsRepository)
+        public GroupsController(IGroupsRepository groupsRepository, ILocationsRepository locationsRepository)
         {
-            _context = context;
             _groupsRepository = groupsRepository;
+            _locationsRepository = locationsRepository;
 
             GroupVM = new GroupViewModel
             {
                 Group = new Group(),
                 Groups = new List<Group>(),
-                Locations = _context.Locations.ToList()
+                Locations = _locationsRepository.GetAll().ToList()
             };
         }
 
@@ -104,8 +104,7 @@ namespace NetworksManagement.Controllers
             {
                 try
                 {
-                    _context.Update(group);
-                    await _context.SaveChangesAsync();
+                    await _groupsRepository.UpdateAsync(group, SelectedLocations);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -130,29 +129,30 @@ namespace NetworksManagement.Controllers
                 return NotFound();
             }
 
-            var @group = await _context.Groups
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (@group == null)
+            GroupVM.Group = await _groupsRepository.GetAsync(id);
+
+            if (GroupVM.Group == null)
             {
                 return NotFound();
             }
 
-            return View(@group);
+            return View(GroupVM);
         }
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var @group = await _context.Groups.FindAsync(id);
-            _context.Groups.Remove(@group);
-            await _context.SaveChangesAsync();
+            var group = await _groupsRepository.GetAsync(id);
+
+            await _groupsRepository.RemoveAsync(group);
+
             return RedirectToAction(nameof(Index));
         }
 
         private bool GroupExists(int id)
         {
-            return _context.Groups.Any(e => e.Id == id);
+            return _groupsRepository.Any(id);
         }
     }
 }

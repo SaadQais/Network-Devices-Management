@@ -12,5 +12,8 @@ namespace NetworksManagement.Core
         public IQueryable<Group> GetAll();
         public Task AddAsync(Group group, int[] locations);
         public Task<Group> GetAsync(int? groupId);
+        public Task UpdateAsync(Group group, int[] locations);
+        public Task RemoveAsync(Group group);
+        public bool Any(int groupId);
     }
 }

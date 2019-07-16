@@ -2,6 +2,7 @@
 using NetworksManagement.Core;
 using NetworksManagement.Data;
 using NetworksManagement.Data.Models;
+using NetworksManagement.Infrastructure.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,6 +51,30 @@ namespace NetworksManagement.Infrastructure
             return groups;
         }
 
+        public async Task UpdateAsync(Group group, int[] locations)
+        {
+            var groupFromDb = await _context.Groups.Include(g => g.LocationsGroups).FirstOrDefaultAsync(g => g.Id == group.Id);
+            var selectedLocations = await _context.Locations.Where(l => locations.Contains(l.Id)).ToListAsync();
 
+            _context.TryUpdateManyToMany(groupFromDb.LocationsGroups, selectedLocations
+                .Select(x => new LocationsGroups
+                {
+                     LocationId = x.Id,
+                     GroupId = group.Id
+                }), x => x.LocationId);
+            
+            await _context.SaveChangesAsync();
+        }
+
+        public bool Any(int groupId)
+        {
+            return _context.Groups.Any(g => g.Id == groupId);
+        }
+
+        public async Task RemoveAsync(Group group)
+        {
+            _context.Groups.Remove(group);
+            await _context.SaveChangesAsync();
+        }
     }
 }
