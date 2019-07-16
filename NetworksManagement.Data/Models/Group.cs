@@ -11,5 +11,6 @@ namespace NetworksManagement.Data.Models
         public string IpRange { get; set; }
 
         public virtual ICollection<LocationsGroups> LocationsGroups { get; set; }
+        public virtual ICollection<Device> Devices { get; set; }
     }
 }

@@ -26,6 +26,8 @@ namespace NetworksManagement.Data
         public DbSet<Group> Groups { get; set; }
         public DbSet<LocationsGroups> LocationsGroups { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<Device> Devices { get; set; }
+        public DbSet<Interface> Interfaces { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
