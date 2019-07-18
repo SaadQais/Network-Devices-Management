@@ -17,14 +17,17 @@ namespace NetworksManagement.Controllers
     {
         private readonly IDevicesRepository _devicesRepository;
         private readonly IGroupsRepository _groupsRepository;
+        private readonly IInterfacesRepository _interfacesRepository;
 
         [BindProperty]
         public DeviceViewModel DeviceVM { get; set; }
 
-        public DevicesController(IDevicesRepository devicesRepository, IGroupsRepository groupsRepository)
+        public DevicesController(IDevicesRepository devicesRepository, IGroupsRepository groupsRepository,
+            IInterfacesRepository interfacesRepository)
         {
             _devicesRepository = devicesRepository;
             _groupsRepository = groupsRepository;
+            _interfacesRepository = interfacesRepository;
 
             DeviceVM = new DeviceViewModel
             {
@@ -126,33 +129,31 @@ namespace NetworksManagement.Controllers
             return View(DeviceVM.Groups);
         }
 
-        //public async Task<IActionResult> Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-        //    var device = await _context.Devices
-        //        .Include(d => d.Group)
-        //        .FirstOrDefaultAsync(m => m.Id == id);
-        //    if (device == null)
-        //    {
-        //        return NotFound();
-        //    }
+            DeviceVM.Device = await _devicesRepository.GetAsync(id);
 
-        //    return View(device);
-        //}
+            if (DeviceVM.Device == null)
+            {
+                return NotFound();
+            }
 
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteConfirmed(int id)
-        //{
-        //    var device = await _context.Devices.FindAsync(id);
-        //    _context.Devices.Remove(device);
-        //    await _context.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
+            return View(DeviceVM);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var device = await _devicesRepository.GetAsync(id);
+            await _devicesRepository.RemoveAsync(device);
+            return RedirectToAction(nameof(Index));
+        }
 
         private bool DeviceExists(int id)
         {
@@ -162,16 +163,18 @@ namespace NetworksManagement.Controllers
         public async Task<IActionResult> GetAvailableAdresses(int? id)
         {
             var group = await _groupsRepository.GetAsync(id);
-
+            
             if (group == null)
                 return NotFound();
+
+            var interfaces = _interfacesRepository.GetByGroupId(group.Id);
 
             var availableList = new List<string>();
 
             foreach (var ip in IPAddressRange.Parse(group.IpRange))
             {
-                
-                availableList.Add(ip.ToString());
+                if(!interfaces.Any(i => i.Address.Contains(ip.ToString())))
+                    availableList.Add(ip.ToString());
             }
 
             return Json(availableList);
