@@ -5,28 +5,40 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using NetworksManagement.Core;
 using NetworksManagement.Data;
 using NetworksManagement.Data.Models;
+using NetworksManagement.Data.ViewModels;
 
 namespace NetworksManagement.Controllers
 {
     public class DevicesController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IDevicesRepository _devicesRepository;
+        private readonly IGroupsRepository _groupsRepository;
 
-        public DevicesController(ApplicationDbContext context)
+        [BindProperty]
+        public DeviceViewModel DeviceVM { get; set; }
+
+        public DevicesController(IDevicesRepository devicesRepository, IGroupsRepository groupsRepository)
         {
-            _context = context;
+            _devicesRepository = devicesRepository;
+            _groupsRepository = groupsRepository;
+
+            DeviceVM = new DeviceViewModel
+            {
+                Groups = new List<Group>()
+            };
         }
 
         // GET: Devices
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Devices.Include(d => d.Group);
-            return View(await applicationDbContext.ToListAsync());
+            var devices = await _devicesRepository.GetAll().ToListAsync();
+
+            return View(devices);
         }
 
-        // GET: Devices/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,9 +46,8 @@ namespace NetworksManagement.Controllers
                 return NotFound();
             }
 
-            var device = await _context.Devices
-                .Include(d => d.Group)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var device = await _devicesRepository.GetAsync(id);
+
             if (device == null)
             {
                 return NotFound();
@@ -45,31 +56,26 @@ namespace NetworksManagement.Controllers
             return View(device);
         }
 
-        // GET: Devices/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["GroupId"] = new SelectList(_context.Groups, "Id", "Id");
-            return View();
+            DeviceVM.Groups = await _groupsRepository.GetAll().ToListAsync();
+            return View(DeviceVM);
         }
 
-        // POST: Devices/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,GroupId")] Device device)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(device);
-                await _context.SaveChangesAsync();
+                await _devicesRepository.AddAsync(device);
+
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["GroupId"] = new SelectList(_context.Groups, "Id", "Id", device.GroupId);
+            DeviceVM.Groups = await _groupsRepository.GetAll().ToListAsync();
             return View(device);
         }
 
-        // GET: Devices/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -77,84 +83,80 @@ namespace NetworksManagement.Controllers
                 return NotFound();
             }
 
-            var device = await _context.Devices.FindAsync(id);
-            if (device == null)
+            DeviceVM.Device = await _devicesRepository.GetAsync(id);
+            if (DeviceVM.Device == null)
             {
                 return NotFound();
             }
-            ViewData["GroupId"] = new SelectList(_context.Groups, "Id", "Id", device.GroupId);
-            return View(device);
+            DeviceVM.Groups = await _groupsRepository.GetAll().ToListAsync();
+
+            return View(DeviceVM);
         }
 
-        // POST: Devices/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,GroupId")] Device device)
-        {
-            if (id != device.Id)
-            {
-                return NotFound();
-            }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Edit(int id, [Bind("Id,Name,GroupId")] Device device)
+        //{
+        //    if (id != device.Id)
+        //    {
+        //        return NotFound();
+        //    }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(device);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!DeviceExists(device.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["GroupId"] = new SelectList(_context.Groups, "Id", "Id", device.GroupId);
-            return View(device);
-        }
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            _context.Update(device);
+        //            await _context.SaveChangesAsync();
+        //        }
+        //        catch (DbUpdateConcurrencyException)
+        //        {
+        //            if (!DeviceExists(device.Id))
+        //            {
+        //                return NotFound();
+        //            }
+        //            else
+        //            {
+        //                throw;
+        //            }
+        //        }
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    ViewData["GroupId"] = new SelectList(_context.Groups, "Id", "Id", device.GroupId);
+        //    return View(device);
+        //}
 
-        // GET: Devices/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //public async Task<IActionResult> Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var device = await _context.Devices
-                .Include(d => d.Group)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (device == null)
-            {
-                return NotFound();
-            }
+        //    var device = await _context.Devices
+        //        .Include(d => d.Group)
+        //        .FirstOrDefaultAsync(m => m.Id == id);
+        //    if (device == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(device);
-        }
+        //    return View(device);
+        //}
 
-        // POST: Devices/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var device = await _context.Devices.FindAsync(id);
-            _context.Devices.Remove(device);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //{
+        //    var device = await _context.Devices.FindAsync(id);
+        //    _context.Devices.Remove(device);
+        //    await _context.SaveChangesAsync();
+        //    return RedirectToAction(nameof(Index));
+        //}
 
-        private bool DeviceExists(int id)
-        {
-            return _context.Devices.Any(e => e.Id == id);
-        }
+        //private bool DeviceExists(int id)
+        //{
+        //    return _context.Devices.Any(e => e.Id == id);
+        //}
     }
 }

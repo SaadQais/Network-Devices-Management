@@ -44,6 +44,7 @@ namespace NetworksManagement
 
             services.AddTransient<ILocationsRepository, LocationsRepository>();
             services.AddTransient<IGroupsRepository, GroupsRepository>();
+            services.AddTransient<IDevicesRepository, DevicesRepository>();
 
             services.AddControllersWithViews()
                 .AddNewtonsoftJson();

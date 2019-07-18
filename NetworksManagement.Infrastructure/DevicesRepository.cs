@@ -32,7 +32,7 @@ namespace NetworksManagement.Infrastructure
 
         public IQueryable<Device> GetAll()
         {
-            var devices = _context.Devices.OrderBy(g => g.Name);
+            var devices = _context.Devices.Include(d => d.Group).OrderBy(g => g.Name);
 
             return devices;
         }
