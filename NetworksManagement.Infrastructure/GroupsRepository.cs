@@ -39,7 +39,8 @@ namespace NetworksManagement.Infrastructure
 
         public async Task<Group> GetAsync(int? groupId)
         {
-            var group = await _context.Groups.Include(g => g.LocationsGroups).FirstOrDefaultAsync(g => g.Id == groupId);
+            var group = await _context.Groups.Include(g => g.LocationsGroups).Include(g => g.Devices)
+                .FirstOrDefaultAsync(g => g.Id == groupId);
 
             return group;
         }

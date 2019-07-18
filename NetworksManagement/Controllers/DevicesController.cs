@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using NetTools;
 using NetworksManagement.Core;
 using NetworksManagement.Data;
 using NetworksManagement.Data.Models;
@@ -93,38 +94,37 @@ namespace NetworksManagement.Controllers
             return View(DeviceVM);
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(int id, [Bind("Id,Name,GroupId")] Device device)
-        //{
-        //    if (id != device.Id)
-        //    {
-        //        return NotFound();
-        //    }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,GroupId")] Device device, List<Interface> Interfaces)
+        {
+            if (id != device.Id)
+            {
+                return NotFound();
+            }
 
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            _context.Update(device);
-        //            await _context.SaveChangesAsync();
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!DeviceExists(device.Id))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    ViewData["GroupId"] = new SelectList(_context.Groups, "Id", "Id", device.GroupId);
-        //    return View(device);
-        //}
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    await _devicesRepository.UpdateAsync(device, Interfaces);
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!DeviceExists(device.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            DeviceVM.Groups = await _groupsRepository.GetAll().ToListAsync();
+            return View(DeviceVM.Groups);
+        }
 
         //public async Task<IActionResult> Delete(int? id)
         //{
@@ -154,9 +154,27 @@ namespace NetworksManagement.Controllers
         //    return RedirectToAction(nameof(Index));
         //}
 
-        //private bool DeviceExists(int id)
-        //{
-        //    return _context.Devices.Any(e => e.Id == id);
-        //}
+        private bool DeviceExists(int id)
+        {
+            return _devicesRepository.Any(id);
+        }
+
+        public async Task<IActionResult> GetAvailableAdresses(int? id)
+        {
+            var group = await _groupsRepository.GetAsync(id);
+
+            if (group == null)
+                return NotFound();
+
+            var availableList = new List<string>();
+
+            foreach (var ip in IPAddressRange.Parse(group.IpRange))
+            {
+                
+                availableList.Add(ip.ToString());
+            }
+
+            return Json(availableList);
+        }
     }
 }

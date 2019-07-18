@@ -7,6 +7,7 @@ namespace NetworksManagement.Data.Models
 {
     public class Interface
     {
+        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }

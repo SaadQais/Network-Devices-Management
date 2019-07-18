@@ -50,9 +50,11 @@ namespace NetworksManagement.Infrastructure
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(Device device)
+        public async Task UpdateAsync(Device device, List<Interface> interfaces)
         {
-            _context.Update(device);
+            var deviceFromDb = _context.Devices.Include(d => d.Interfaces).FirstOrDefault(d => d.Id == device.Id);
+            deviceFromDb.Interfaces = interfaces;
+            _context.Update(deviceFromDb);
             await _context.SaveChangesAsync();
         }
     }

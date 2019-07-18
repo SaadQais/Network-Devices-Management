@@ -12,7 +12,7 @@ namespace NetworksManagement.Core
         public IQueryable<Device> GetAll();
         public Task AddAsync(Device device);
         public Task<Device> GetAsync(int? deviceId);
-        public Task UpdateAsync(Device device);
+        public Task UpdateAsync(Device device, List<Interface> interfaces);
         public Task RemoveAsync(Device device);
         public bool Any(int deviceId);
     }

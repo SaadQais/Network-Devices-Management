@@ -43,6 +43,42 @@
                                 </div>
                             </div>
 
+                            <div class="form-group row">
+                                <div class="col-md-2">
+                                    <label asp-for="Device.Interfaces"></label>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <input type="text" placeholder="interface name" id="addInterface" class="form-control" />
+                                        </div>
+                                        <div class="col-md-5">
+                                            <input type="text" placeholder="ip address" id="addIpAddress" class="form-control" />
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="button" id="addInterfaceBtn" value="Add Interface" class="btn btn-default btn-xs" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-md-2">
+
+                                </div>
+                                <div class="col-md-6">
+                                    <table id="itemsTable" class="table">
+                                        <thead>
+                                            <tr>
+                                                <th> Interface Name </th>
+                                                <th> Ip Address </th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <input type="submit" class="btn btn-primary" value="Create" />
                                 <a asp-action="Index" class="btn btn-success">Back To List</a>
@@ -54,3 +90,28 @@
         </div>
     </div>
 </div>
+
+@section Scripts
+    {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+    <script>
+    var index = 0;
+    $(document).ready(function () {
+        $('#addInterfaceBtn').click(function () {
+            var name = $('#addInterface').val();
+            var ip = $('#addIpAddress').val();
+
+            var i = index++;
+            $('#itemsTable').append(
+                '<tr><td>' +
+                '<input type="text"  class="form-control" id = "Interface_Name" name = "Interfaces[' + i + '].Name" value=' + name + '> </input> ' +
+                '</td > <td> ' +
+                '<input type="text"  class="form-control" id = "Interface_Address" name = "Interfaces[' + i + '].Address" value=' + ip + '> </input> ' +
+                ' </td> ' +
+                '<td><button class="btn btn-default btn-xs" type="button" onclick="$(this).parent().parent().remove();;return false;"> <i class="material-icons">delete_forever</i></button>' +
+                '</td></tr > ');
+        });
+    });
+    </script>
+}
