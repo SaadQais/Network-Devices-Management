@@ -39,7 +39,8 @@ namespace NetworksManagement.Infrastructure
 
         public async Task<Device> GetAsync(int? deviceId)
         {
-            var device = await _context.Devices.FirstOrDefaultAsync(l => l.Id == deviceId);
+            var device = await _context.Devices.Include(d => d.Group).Include(d => d.Interfaces)
+                .FirstOrDefaultAsync(l => l.Id == deviceId);
 
             return device;
         }
@@ -53,7 +54,11 @@ namespace NetworksManagement.Infrastructure
         public async Task UpdateAsync(Device device, List<Interface> interfaces)
         {
             var deviceFromDb = _context.Devices.Include(d => d.Interfaces).FirstOrDefault(d => d.Id == device.Id);
+
             deviceFromDb.Interfaces = interfaces;
+            deviceFromDb.Name = device.Name;
+            deviceFromDb.GroupId = device.GroupId;
+
             _context.Update(deviceFromDb);
             await _context.SaveChangesAsync();
         }

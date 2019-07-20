@@ -1,30 +1,60 @@
-﻿@model NetworksManagement.Data.Models.Device
+﻿@model NetworksManagement.Data.ViewModels.DeviceViewModel
 
 @{
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header card-header-primary">
+                    <div class="row">
+                        <div class="col-6">
+                            <h3 class="card-title ">Device Details</h3>
+                        </div>
+                    </div>
+                    <br />
+                </div>
+                <br />
+                <div class="card-body">
+                    <div class="p-4  border rounded">
+                        <input type="hidden" asp-for="Device.Id" />
 
-<div>
-    <h4>Device</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Group)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Group.Id)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+                        <div class="col-8">
+                            <div class="form-group row">
+                                <div class="col-md-4">
+                                    <label asp-for="Device.Name"></label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input asp-for="Device.Name" disabled class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-md-4">
+                                    <label asp-for="Device.Group"></label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input asp-for="Device.Group.Name" disabled class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="col-1">
+
+                            </div>
+
+                            <div class="col-3">
+
+                            </div>
+
+                            <div class="form-group">
+                                <a asp-action="Edit" asp-route-id="@Model.Device.Id" class="btn btn-info">Edit</a>
+                                <a asp-action="Index" class="btn btn-success">Back To List</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>

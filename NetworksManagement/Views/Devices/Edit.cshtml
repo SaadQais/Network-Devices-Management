@@ -22,7 +22,7 @@
                 <form method="post" asp-action="Edit">
                     <div class="p-4 border rounded">
                         <input type="hidden" asp-for="Device.Id" />
-                        
+
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                         <div class="form-group row">
@@ -55,7 +55,7 @@
                                         <input type="text" placeholder="interface name" id="addInterface" class="form-control" />
                                     </div>
                                     <div class="col-md-5">
-                                        <input type="text" placeholder="ip address" id="addIpAddress" class="form-control" />
+                                        <select id="ipaddress-dropdown" name="ipAddressesList" class="form-control"></select>
                                     </div>
                                     <div class="col-md-2">
                                         <input type="button" id="addInterfaceBtn" value="Add Interface" class="btn btn-default btn-xs" />
@@ -77,6 +77,22 @@
                                             <th></th>
                                         </tr>
                                     </thead>
+                                    <tbody>
+                                        @foreach(var item in Model.Device.Interfaces)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <input type="text" readonly class="form-control" id="Interface_Name" name="InterfacesNames" value="@item.Name" />
+                                                </td>
+                                                <td>
+                                                    <input type="text" readonly class="form-control" id="Interface_Address" name="InterfacesAddresses" value="@item.Address" />
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-default btn-xs" type="button" onclick="$(this).parent().parent().remove();;return false;"> <i class="material-icons">delete_forever</i></button>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -97,25 +113,38 @@
     {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 
-<script>
-    var index = 0;
-    $(document).ready(function () {
-        $('#addInterfaceBtn').click(function () {
-            var name = $('#addInterface').val();
-            var ip = $('#addIpAddress').val();
+    <script>
+        $(document).ready(function () {
+            $('#addInterfaceBtn').click(function () {
+                var name = $('#addInterface').val();
+                var ip = $('#ipaddress-dropdown option:selected').text();
 
-            var i = index++;
-            $('#itemsTable').append(
-                '<tr><td>' +
-                '<input type="text"  class="form-control" id = "Interface_Name" name = "Interfaces[' + i + '].Name" value=' + name + '> </input> ' +
-                '</td > <td> ' +
-                '<input type="text"  class="form-control" id = "Interface_Address" name = "Interfaces[' + i + '].Address" value=' + ip + '> </input> ' +
-                ' </td> ' +
-                '<td><button class="btn btn-default btn-xs" type="button" onclick="$(this).parent().parent().remove();;return false;"> <i class="material-icons">delete_forever</i></button>' +
-                '</td></tr > ');
+                $('#itemsTable').append(
+                    '<tr><td>' +
+                    '<input type="text" readonly class="form-control" id = "Interface_Name" name = "InterfacesNames" value=' + name + ' /> ' +
+                    '</td > <td> ' +
+                    '<input type="text" readonly class="form-control" id = "Interface_Address" name = "InterfacesAddresses" value=' + ip + ' /> ' +
+                    ' </td> ' +
+                    '<td><button class="btn btn-default btn-xs" type="button" onclick="$(this).parent().parent().remove();;return false;"> <i class="material-icons">delete_forever</i></button>' +
+                    '</td></tr > ');
+            });
+
+            let dropdown = $('#ipaddress-dropdown');
+
+        dropdown.empty();
+
+        const url = 'https://localhost:44302/Devices/GetAvailableAdresses/2';
+
+        // Populate dropdown with list of provinces
+        $.getJSON(url, function (data) {
+          $.each(data, function (key, entry) {
+            dropdown.append($('<option></option>').attr('value', entry).text(entry));
+          })
         });
-    });
-</script>
+
+        dropdown.prop('selectedIndex', 0);
+        });
+    </script>
 }
 
 

@@ -10,6 +10,7 @@ using NetworksManagement.Core;
 using NetworksManagement.Data;
 using NetworksManagement.Data.Models;
 using NetworksManagement.Data.ViewModels;
+using NetworksManagement.Infrastructure.Extensions;
 
 namespace NetworksManagement.Controllers
 {
@@ -18,6 +19,7 @@ namespace NetworksManagement.Controllers
         private readonly IDevicesRepository _devicesRepository;
         private readonly IGroupsRepository _groupsRepository;
         private readonly IInterfacesRepository _interfacesRepository;
+        public readonly Helper _helper;
 
         [BindProperty]
         public DeviceViewModel DeviceVM { get; set; }
@@ -28,6 +30,7 @@ namespace NetworksManagement.Controllers
             _devicesRepository = devicesRepository;
             _groupsRepository = groupsRepository;
             _interfacesRepository = interfacesRepository;
+            _helper = new Helper();
 
             DeviceVM = new DeviceViewModel
             {
@@ -50,14 +53,14 @@ namespace NetworksManagement.Controllers
                 return NotFound();
             }
 
-            var device = await _devicesRepository.GetAsync(id);
+            DeviceVM.Device = await _devicesRepository.GetAsync(id);
 
-            if (device == null)
+            if (DeviceVM.Device == null)
             {
                 return NotFound();
             }
 
-            return View(device);
+            return View(DeviceVM);
         }
 
         public async Task<IActionResult> Create()
@@ -68,10 +71,12 @@ namespace NetworksManagement.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,GroupId")] Device device)
+        public async Task<IActionResult> Create([Bind("Id,Name,GroupId")] Device device, List<string> InterfacesNames,
+            List<string> InterfacesAddresses)
         {
             if (ModelState.IsValid)
             {
+                device.Interfaces = _helper.GetInterfacesFromNameAddress(InterfacesNames, InterfacesAddresses);
                 await _devicesRepository.AddAsync(device);
 
                 return RedirectToAction(nameof(Index));
@@ -99,7 +104,8 @@ namespace NetworksManagement.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,GroupId")] Device device, List<Interface> Interfaces)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,GroupId")] Device device, List<string> InterfacesNames,
+            List<string> InterfacesAddresses)
         {
             if (id != device.Id)
             {
@@ -110,7 +116,8 @@ namespace NetworksManagement.Controllers
             {
                 try
                 {
-                    await _devicesRepository.UpdateAsync(device, Interfaces);
+                    List<Interface> interfaces = _helper.GetInterfacesFromNameAddress(InterfacesNames, InterfacesAddresses);
+                    await _devicesRepository.UpdateAsync(device, interfaces);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
