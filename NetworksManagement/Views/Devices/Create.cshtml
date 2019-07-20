@@ -110,21 +110,25 @@
                 '<td><button class="btn btn-default btn-xs" type="button" onclick="$(this).parent().parent().remove();;return false;"> <i class="material-icons">delete_forever</i></button>' +
                 '</td></tr > ');
         });
+        $('#Device_GroupId').change(getAvailableAddresses);
+        getAvailableAddresses();
+    });
 
+    function getAvailableAddresses() {
         let dropdown = $('#ipaddress-dropdown');
+        let groupId = $('#Device_GroupId option:selected').val();
+        const url = "https://localhost:44302/Devices/GetAvailableAdresses/" + groupId;
 
         dropdown.empty();
 
-        const url = 'https://localhost:44302/Devices/GetAvailableAdresses/2';
-
-        // Populate dropdown with list of provinces
+        // Populate dropdown with list of available addresses
         $.getJSON(url, function (data) {
-          $.each(data, function (key, entry) {
+            $.each(data, function (key, entry) {
             dropdown.append($('<option></option>').attr('value', entry).text(entry));
-          })
+            })
         });
 
         dropdown.prop('selectedIndex', 0);
-    });
+    }
     </script>
 }

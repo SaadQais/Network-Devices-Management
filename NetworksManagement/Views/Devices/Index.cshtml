@@ -4,47 +4,65 @@
     ViewData["Title"] = "Index";
 }
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header card-header-primary">
-                    <div class="row">
-                        <div class="col-6">
-                            <h3 class="card-title ">Devices List</h3>
-                        </div>
-                        <div class="col-6 pull-right">
-                            <div class="text-right">
-                                <a asp-action="Create" class="btn btn-info"><i class="material-icons">add</i> &nbsp; New Device</a>
-                            </div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header card-header-primary">
+                <div class="row">
+                    <div class="col-6">
+                        <h3 class="card-title ">Devices List</h3>
+                    </div>
+                    <div class="col-6 pull-right">
+                        <div class="text-right">
+                            <a asp-action="Create" class="btn btn-info"><i class="material-icons">add</i> &nbsp; New Device</a>
                         </div>
                     </div>
-                    <br />
                 </div>
                 <br />
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead class=" text-primary">
-                                <tr>
-                                    <th>@Html.DisplayNameFor(m => m.FirstOrDefault().Name)</th>
-                                    <th>@Html.DisplayNameFor(m => m.FirstOrDefault().Group)</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
+            </div>
+            <br />
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class=" text-primary">
+                            <tr>
+                                <th>@Html.DisplayNameFor(m => m.FirstOrDefault().Name)</th>
+                                <th>@Html.DisplayNameFor(m => m.FirstOrDefault().Group)</th>
+                                <th>@Html.DisplayName("Status")</th>
+                                <th></th>
+                            </tr>
+                        </thead>
 
-                            <tbody>
-                                @foreach (var item in Model)
-                                {
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
                                 <tr>
                                     <td>@Html.DisplayFor(m => item.Name)</td>
                                     <td>@Html.DisplayFor(m => item.Group.Name)</td>
+                                    <td><label class="statuslbl"><i class="material-icons">done</i></label></td>
                                     <partial name="_TableButtonsPartial" model="item.Id" />
                                 </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
+                            }
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
+@section Scripts
+{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+    <script>
+        $(document).ready(function () {
+            setInterval(function() {
+               $(".statuslbl").each(function(){
+                    var label = $(this).text();
+                    this.append('Ok');
+                });
+            }, 5000);
+         });
+    </script>
+}

@@ -57,6 +57,9 @@ namespace NetworksManagement.Infrastructure
             var groupFromDb = await _context.Groups.Include(g => g.LocationsGroups).FirstOrDefaultAsync(g => g.Id == group.Id);
             var selectedLocations = await _context.Locations.Where(l => locations.Contains(l.Id)).ToListAsync();
 
+            groupFromDb.IpRange = group.IpRange;
+            groupFromDb.Name = group.Name;
+
             _context.TryUpdateManyToMany(groupFromDb.LocationsGroups, selectedLocations
                 .Select(x => new LocationsGroups
                 {
