@@ -39,7 +39,6 @@ namespace NetworksManagement.Controllers
             };
         }
 
-        // GET: Devices
         public async Task<IActionResult> Index()
         {
             var devices = await _devicesRepository.GetAll().ToListAsync();
