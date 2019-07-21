@@ -27,6 +27,7 @@
                         <thead class=" text-primary">
                             <tr>
                                 <th>@Html.DisplayNameFor(m => m.FirstOrDefault().Name)</th>
+                                <th>@Html.DisplayNameFor(m => m.FirstOrDefault().Type)</th>
                                 <th>@Html.DisplayNameFor(m => m.FirstOrDefault().Group)</th>
                                 <th>@Html.DisplayName("Status")</th>
                                 <th></th>
@@ -38,6 +39,7 @@
                             {
                                 <tr>
                                     <td>@Html.DisplayFor(m => item.Name)</td>
+                                    <td>@Html.DisplayFor(m => item.Type)</td>
                                     <td>@Html.DisplayFor(m => item.Group.Name)</td>
                                     <td>
                                         <input type="hidden" class="deviceHidden" value="@item.Id" />

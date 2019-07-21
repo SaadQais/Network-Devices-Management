@@ -58,6 +58,7 @@ namespace NetworksManagement.Infrastructure
             deviceFromDb.Interfaces = interfaces;
             deviceFromDb.Name = device.Name;
             deviceFromDb.GroupId = device.GroupId;
+            deviceFromDb.Type = device.Type;
 
             _context.Update(deviceFromDb);
             await _context.SaveChangesAsync();
