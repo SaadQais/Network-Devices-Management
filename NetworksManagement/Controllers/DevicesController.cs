@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -185,6 +186,25 @@ namespace NetworksManagement.Controllers
             }
 
             return Json(availableList);
+        }
+
+        public async Task<bool> GetDeviceStatus(int? id)
+        {
+            var device = await _devicesRepository.GetAsync(id);
+
+            if (device == null)
+                return false;
+
+            foreach(var ethernet in device.Interfaces)
+            {
+                using var ping = new Ping();
+                PingReply pingReply =  await ping.SendPingAsync(ethernet.Address, 1000);
+
+                if (pingReply.Status == IPStatus.Success)
+                    return true;
+            }
+
+            return false;
         }
     }
 }

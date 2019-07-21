@@ -39,7 +39,10 @@
                                 <tr>
                                     <td>@Html.DisplayFor(m => item.Name)</td>
                                     <td>@Html.DisplayFor(m => item.Group.Name)</td>
-                                    <td><label class="statuslbl"><i class="material-icons">done</i></label></td>
+                                    <td>
+                                        <input type="hidden" class="deviceHidden" value="@item.Id" />
+                                        <label class="statuslbl">Getting Status</label>
+                                    </td>
                                     <partial name="_TableButtonsPartial" model="item.Id" />
                                 </tr>
                             }
@@ -57,10 +60,20 @@
 
     <script>
         $(document).ready(function () {
-            setInterval(function() {
-               $(".statuslbl").each(function(){
-                    var label = $(this).text();
-                    this.append('Ok');
+            setInterval(function () {
+                $(".statuslbl").each(function () {
+                    let id = $('input[type=hidden]', $(this).closest("td")).val();
+                    let label = $(this);
+
+                    const url = "https://localhost:44302/Devices/GetDeviceStatus/" + id;
+
+                    $.getJSON(url, function (data) {
+                        if (data == true) {
+                            label.html('<i class="material-icons">wifi</i>');
+                        } else {
+                            label.html('<i class="material-icons">wifi_off</i>');
+                        }
+                    });
                 });
             }, 5000);
          });
