@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -165,45 +164,6 @@ namespace NetworksManagement.Controllers
         private bool DeviceExists(int id)
         {
             return _devicesRepository.Any(id);
-        }
-
-        public async Task<IActionResult> GetAvailableAdresses(int? id)
-        {
-            var group = await _groupsRepository.GetAsync(id);
-            
-            if (group == null)
-                return NotFound();
-
-            var interfaces = _interfacesRepository.GetByGroupId(group.Id);
-
-            var availableList = new List<string>();
-
-            foreach (var ip in IPAddressRange.Parse(group.IpRange))
-            {
-                if(!interfaces.Any(i => i.Address.Contains(ip.ToString())))
-                    availableList.Add(ip.ToString());
-            }
-
-            return Json(availableList);
-        }
-
-        public async Task<bool> GetDeviceStatus(int? id)
-        {
-            var device = await _devicesRepository.GetAsync(id);
-
-            if (device == null)
-                return false;
-
-            foreach(var ethernet in device.Interfaces)
-            {
-                using var ping = new Ping();
-                PingReply pingReply =  await ping.SendPingAsync(ethernet.Address, 1000);
-
-                if (pingReply.Status == IPStatus.Success)
-                    return true;
-            }
-
-            return false;
         }
     }
 }

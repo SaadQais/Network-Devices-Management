@@ -101,7 +101,7 @@
                     let id = $('input[type=hidden]', $(this).closest("td")).val();
                     let label = $(this);
 
-                    const url = "https://localhost:44302/Devices/GetDeviceStatus/" + id;
+                    const url = "https://localhost:44302/Tools/GetDeviceStatus/" + id;
 
                     $.getJSON(url, function (data) {
                         if (data == true) {
