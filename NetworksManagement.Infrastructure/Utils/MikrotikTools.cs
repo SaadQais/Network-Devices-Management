@@ -9,25 +9,35 @@ namespace NetworksManagement.Infrastructure.Utils
 {
     public class MikrotikTools
     {
-        public string ExecuteSSHCommand(Device device, string script)
+        public string ExecuteSSHCommand(Device device, string script, string username, string password)
         {
-            try
+            string exceptionMessage = "";
+
+            script = script.Replace("\r\n", ";");
+            
+            foreach(var item in device.Interfaces)
             {
-                script = script.Replace("\r\n", ";");
+                try
+                {
+                    
+                    using SshClient ssh = new SshClient(item.Address, username ?? "", password ?? "");
+                    {
+                        ssh.Connect();
 
-                using SshClient ssh = new SshClient(device.Interfaces.First().Address, "admin", "");
-                    ssh.Connect();
+                        var response = ssh.RunCommand(script ?? "");
 
-                var response = ssh.RunCommand(script);
+                        ssh.Disconnect();
 
-                ssh.Disconnect();
-
-                return response.Result;
+                        return response.Result;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    exceptionMessage = ex.Message;
+                }
             }
-            catch (Exception ex)
-            {
-                return ex.Message;
-            }
+
+            return exceptionMessage;
         }
     }
 }

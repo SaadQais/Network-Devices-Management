@@ -69,16 +69,16 @@ namespace NetworksManagement.Controllers.Api
         }
 
         [HttpPost]
-        public async Task<IActionResult> RunCommand(int? id, string command)
+        public async Task<IActionResult> RunCommand(int? deviceId, string commandTxt, string username, string password)
         {
-            var device = await _devicesRepository.GetAsync(id);
+            var device = await _devicesRepository.GetAsync(deviceId);
 
             if (device == null)
                 return NotFound();
 
-            string result = _mikrotik.ExecuteSSHCommand(device, command);
+            string result = _mikrotik.ExecuteSSHCommand(device, commandTxt, username, password);
 
-            return Ok(result);
+            return RedirectToAction("Index", "Devices");
         }
     }
 }
