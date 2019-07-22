@@ -84,7 +84,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Run</button>
+                <button type="button" id="runCommandBtn" class="btn btn-primary">Run</button>
             </div>
         </div>
     </div>
@@ -95,6 +95,7 @@
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 
     <script>
+        var deviceId = 0;
         $(document).ready(function () {
             setInterval(function () {
                 $(".statuslbl").each(function () {
@@ -115,13 +116,23 @@
 
             $('#terminalModal').on('show.bs.modal', function (event) {
                   var button = $(event.relatedTarget) // Button that triggered the modal
-                  var deviceId = button.data('whatever') // Extract info from data-* attributes
+                  deviceId = button.data('whatever') // Extract info from data-* attributes
                   // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
                   // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
                   //var modal = $(this)
                   //modal.find('.modal-title').text('New message to ' + recipient)
                   //modal.find('.modal-body input').val(recipient)
             })
+
+            $('#runCommandBtn').click(function () {
+                const url = "https://localhost:44302/Tools/RunCommand/";
+                var commandText = $('#message-text').val();
+
+                $.post(url, { id: deviceId, command: commandText })
+                    .done(function( data ) {
+                        alert( "Data Loaded: " + data );
+                    });
+            });
          });
     </script>
 }

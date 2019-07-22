@@ -7,6 +7,7 @@ using System.Net.NetworkInformation;
 using Microsoft.AspNetCore.Mvc;
 using NetTools;
 using NetworksManagement.Core;
+using NetworksManagement.Infrastructure.Utils;
 
 namespace NetworksManagement.Controllers.Api
 {
@@ -15,6 +16,7 @@ namespace NetworksManagement.Controllers.Api
         private readonly IDevicesRepository _devicesRepository;
         private readonly IGroupsRepository _groupsRepository;
         private readonly IInterfacesRepository _interfacesRepository;
+        private readonly MikrotikTools _mikrotik;
 
         public ToolsController(IDevicesRepository devicesRepository, IGroupsRepository groupsRepository,
             IInterfacesRepository interfacesRepository)
@@ -22,6 +24,7 @@ namespace NetworksManagement.Controllers.Api
             _devicesRepository = devicesRepository;
             _groupsRepository = groupsRepository;
             _interfacesRepository = interfacesRepository;
+            _mikrotik = new MikrotikTools();
         }
 
         [HttpGet]
@@ -66,16 +69,16 @@ namespace NetworksManagement.Controllers.Api
         }
 
         [HttpPost]
-        public async Task<IActionResult> RunCommand(int? id)
+        public async Task<IActionResult> RunCommand(int? id, string command)
         {
             var device = await _devicesRepository.GetAsync(id);
 
             if (device == null)
                 return NotFound();
 
+            string result = _mikrotik.ExecuteSSHCommand(device, command);
 
-
-            return Ok();
+            return Ok(result);
         }
     }
 }

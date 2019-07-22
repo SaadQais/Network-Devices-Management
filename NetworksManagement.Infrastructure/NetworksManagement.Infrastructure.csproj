@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="SSH.NET" Version="2016.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\NetworksManagement.Core\NetworksManagement.Core.csproj" />
   </ItemGroup>
 
