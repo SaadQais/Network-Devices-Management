@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NetTools;
 using NetworksManagement.Core;
-using NetworksManagement.Data;
 using NetworksManagement.Data.Models;
 using NetworksManagement.Data.ViewModels;
-using NetworksManagement.Infrastructure.Extensions;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace NetworksManagement.Controllers
 {
@@ -19,18 +13,18 @@ namespace NetworksManagement.Controllers
         private readonly IDevicesRepository _devicesRepository;
         private readonly IGroupsRepository _groupsRepository;
         private readonly IInterfacesRepository _interfacesRepository;
-        public readonly Helper _helper;
+        public readonly IHelper _helper;
 
         [BindProperty]
         public DeviceViewModel DeviceVM { get; set; }
 
         public DevicesController(IDevicesRepository devicesRepository, IGroupsRepository groupsRepository,
-            IInterfacesRepository interfacesRepository)
+            IInterfacesRepository interfacesRepository, IHelper helper)
         {
             _devicesRepository = devicesRepository;
             _groupsRepository = groupsRepository;
             _interfacesRepository = interfacesRepository;
-            _helper = new Helper();
+            _helper = helper;
 
             DeviceVM = new DeviceViewModel
             {

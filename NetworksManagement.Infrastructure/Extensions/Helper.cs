@@ -1,11 +1,12 @@
-﻿using NetworksManagement.Data.Models;
+﻿using NetworksManagement.Core;
+using NetworksManagement.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace NetworksManagement.Infrastructure.Extensions
 {
-    public class Helper
+    public class Helper : IHelper
     {
         public List<Interface> GetInterfacesFromNameAddress(List<string> interfacesNames,
             List<string> interfacesAddresses)

@@ -15,6 +15,7 @@ using Microsoft.Extensions.Hosting;
 using NetworksManagement.Core;
 using NetworksManagement.Infrastructure;
 using NetworksManagement.Infrastructure.Utils;
+using NetworksManagement.Infrastructure.Extensions;
 
 namespace NetworksManagement
 {
@@ -47,6 +48,7 @@ namespace NetworksManagement
             services.AddTransient<IGroupsRepository, GroupsRepository>();
             services.AddTransient<IDevicesRepository, DevicesRepository>();
             services.AddTransient<IInterfacesRepository, InterfacesRepository>();
+            services.AddTransient<IHelper, Helper>();
 
             services.AddTransient<MikrotikTools>();
             services.AddTransient<CisscoTools>();
