@@ -16,15 +16,15 @@ namespace NetworksManagement.Controllers.Api
         private readonly IDevicesRepository _devicesRepository;
         private readonly IGroupsRepository _groupsRepository;
         private readonly IInterfacesRepository _interfacesRepository;
-        private readonly MikrotikTools _mikrotik;
+        private readonly Func<string, IDeviceTools> _serviceAccessor;
 
         public ToolsController(IDevicesRepository devicesRepository, IGroupsRepository groupsRepository,
-            IInterfacesRepository interfacesRepository)
+            IInterfacesRepository interfacesRepository, Func<string, IDeviceTools> serviceAccessor)
         {
             _devicesRepository = devicesRepository;
             _groupsRepository = groupsRepository;
             _interfacesRepository = interfacesRepository;
-            _mikrotik = new MikrotikTools();
+            _serviceAccessor = serviceAccessor;
         }
 
         [HttpGet]
@@ -76,7 +76,7 @@ namespace NetworksManagement.Controllers.Api
             if (device == null)
                 return NotFound();
 
-            string result = _mikrotik.ExecuteSSHCommand(device, commandTxt, username, password);
+            string result = _serviceAccessor("M").ExecuteSSHCommand(device, commandTxt, username, password);
 
             return RedirectToAction("Index", "Devices");
         }

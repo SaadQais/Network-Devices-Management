@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NetworksManagement.Core;
 using NetworksManagement.Infrastructure;
+using NetworksManagement.Infrastructure.Utils;
 
 namespace NetworksManagement
 {
@@ -46,6 +47,21 @@ namespace NetworksManagement
             services.AddTransient<IGroupsRepository, GroupsRepository>();
             services.AddTransient<IDevicesRepository, DevicesRepository>();
             services.AddTransient<IInterfacesRepository, InterfacesRepository>();
+
+            services.AddTransient<MikrotikTools>();
+            services.AddTransient<CisscoTools>();
+            services.AddTransient<Func<string, IDeviceTools>>(serviceProvider => key =>
+            {
+                switch (key)
+                {
+                    case "M":
+                        return serviceProvider.GetService<MikrotikTools>();
+                    case "C":
+                        return serviceProvider.GetService<CisscoTools>();
+                    default:
+                        throw new KeyNotFoundException(); 
+                }
+            });
 
             services.AddControllersWithViews()
                 .AddNewtonsoftJson();

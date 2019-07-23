@@ -8,7 +8,7 @@ using System.Text;
 
 namespace NetworksManagement.Infrastructure.Utils
 {
-    public class MikrotikTools : IDeviceTools
+    public class CisscoTools : IDeviceTools
     {
         public string ExecuteSSHCommand(Device device, string script, string username, string password)
         {
