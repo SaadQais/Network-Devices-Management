@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace NetworksManagement.Infrastructure.Extensions
+namespace NetworksManagement.Infrastructure.Utils
 {
     public class Helper : IHelper
     {

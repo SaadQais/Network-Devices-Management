@@ -32,9 +32,11 @@ namespace NetworksManagement.Controllers
             };
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string message)
         {
             var devices = await _devicesRepository.GetAll().ToListAsync();
+
+            ViewBag.Message = "Hello";
 
             return View(devices);
         }

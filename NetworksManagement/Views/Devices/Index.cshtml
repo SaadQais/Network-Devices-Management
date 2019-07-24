@@ -4,6 +4,8 @@
     ViewData["Title"] = "Index";
 }
 
+@Html.Hidden("message", (string)ViewBag.Message)
+
 <div class="row">
     <div class="col-md-12">
         <div class="card">
@@ -98,7 +100,7 @@
                     <button type="submit" id="CommandBtn" class="btn btn-primary">Run</button>
                 </div>
             </form>
-          
+
         </div>
     </div>
 </div>
@@ -128,11 +130,11 @@
             }, 5000);
 
             $('#terminalModal').on('show.bs.modal', function (event) {
-                  var button = $(event.relatedTarget) // Button that triggered the modal
-                  deviceId = button.data('whatever') // Extract info from data-* attributes
-                  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-                  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-                  var modal = $(this)
+                var button = $(event.relatedTarget) // Button that triggered the modal
+                deviceId = button.data('whatever') // Extract info from data-* attributes
+                // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                var modal = $(this)
                 //modal.find('.modal-title').text('New message to ' + recipient)
                 modal.find('#deviceId-input').val(deviceId)
             })
@@ -144,10 +146,29 @@
                 var pass = $('#password').val();
 
                 $.post(url, { id: deviceId, command: commandText, username: user, password: pass })
-                    .done(function( data ) {
+                    .done(function (data) {
                         $('#terminalModal').modal('toggle');
-                });
+                    });
             });
-         });
+
+            if ($('#message').val()) {
+                showNotification('top','right')
+            }
+
+            function showNotification(from, align){
+              $.notify({
+                  icon: "add_alert",
+                  message: " Script run on device <b>Device Name</b>"
+
+              },{
+                  type: 'success',
+                  timer: 4000,
+                  placement: {
+                      from: from,
+                      align: align
+                  }
+              });
+            }
+        });
     </script>
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace NetworksManagement.Infrastructure.Extensions
+namespace NetworksManagement.Extensions
 {
     public static class ReflectionExtensions
     {

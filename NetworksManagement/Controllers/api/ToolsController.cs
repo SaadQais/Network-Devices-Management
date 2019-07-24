@@ -78,7 +78,7 @@ namespace NetworksManagement.Controllers.Api
 
             string result = _serviceAccessor("M").ExecuteSSHCommand(device, commandTxt, username, password);
 
-            return RedirectToAction("Index", "Devices");
+            return RedirectToAction("Index", "Devices", new { message = result });
         }
     }
 }
