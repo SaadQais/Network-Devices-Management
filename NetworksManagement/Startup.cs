@@ -48,6 +48,7 @@ namespace NetworksManagement
             services.AddTransient<IGroupsRepository, GroupsRepository>();
             services.AddTransient<IDevicesRepository, DevicesRepository>();
             services.AddTransient<IInterfacesRepository, InterfacesRepository>();
+            services.AddTransient<ICommandsRepository, CommandsRepository>();
             services.AddTransient<IHelper, Helper>();
 
             services.AddTransient<MikrotikTools>();

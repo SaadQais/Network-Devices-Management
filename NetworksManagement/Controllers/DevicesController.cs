@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using NetworksManagement.Core;
 using NetworksManagement.Data.Models;
 using NetworksManagement.Data.ViewModels;
+using NetworksManagement.Extensions;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -36,7 +37,7 @@ namespace NetworksManagement.Controllers
         {
             var devices = await _devicesRepository.GetAll().ToListAsync();
 
-            ViewBag.Message = "Hello";
+            ViewBag.Message = message;
 
             return View(devices);
         }

@@ -7,6 +7,7 @@ using System.Text;
 
 namespace NetworksManagement.Data.Models
 {
+    [Serializable]
     public class Device
     {
         public int Id { get; set; }

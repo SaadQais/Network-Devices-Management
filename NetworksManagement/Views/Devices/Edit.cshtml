@@ -20,7 +20,7 @@
             </div>
             <br />
             <div class="card-body">
-                <form method="post" asp-action="Edit">
+                <form method="post">
                     <div class="p-4 border rounded">
                         <input type="hidden" asp-for="Device.Id" />
 
@@ -106,10 +106,10 @@
                                 </table>
                             </div>
                         </div>
-
+                        
                         <div class="form-group">
-                            <input type="submit" class="btn btn-primary" title="update informations" asp-route-id="@Model.Device.Id" value="Update" />
-                            <a class="btn btn-info" title="apply settings to device" asp-controller="Tools" asp-action="Apply"><i class="material-icons">sync</i> Apply</a>
+                            <input type="submit" asp-action="Edit" class="btn btn-primary" title="update informations" asp-route-id="@Model.Device.Id" value="Update" />
+                            <input type="submit"  asp-action="ApplySetting" asp-controller="Tools"  class="btn btn-info" title="apply settings to device"  value="Apply" />
                             <a asp-action="Index" class="btn btn-success">Back To List</a>
                         </div>
                     </div>

@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using NetTools;
 using NetworksManagement.Core;
 using NetworksManagement.Infrastructure.Utils;
+using NetworksManagement.Data.Models;
+using NetworksManagement.Extensions;
 
 namespace NetworksManagement.Controllers.Api
 {
@@ -16,14 +18,19 @@ namespace NetworksManagement.Controllers.Api
         private readonly IDevicesRepository _devicesRepository;
         private readonly IGroupsRepository _groupsRepository;
         private readonly IInterfacesRepository _interfacesRepository;
+        private readonly ICommandsRepository _commandsRepository;
+        private readonly IHelper _helper;
         private readonly Func<string, IDeviceTools> _serviceAccessor;
 
         public ToolsController(IDevicesRepository devicesRepository, IGroupsRepository groupsRepository,
-            IInterfacesRepository interfacesRepository, Func<string, IDeviceTools> serviceAccessor)
+            ICommandsRepository commandsRepository, IInterfacesRepository interfacesRepository, 
+            Func<string, IDeviceTools> serviceAccessor, IHelper helper)
         {
             _devicesRepository = devicesRepository;
             _groupsRepository = groupsRepository;
             _interfacesRepository = interfacesRepository;
+            _commandsRepository = commandsRepository;
+            _helper = helper;
             _serviceAccessor = serviceAccessor;
         }
 
@@ -79,6 +86,16 @@ namespace NetworksManagement.Controllers.Api
             string result = _serviceAccessor("M").ExecuteSSHCommand(device, commandTxt, username, password);
 
             return RedirectToAction("Index", "Devices", new { message = result });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ApplySetting(Device device, List<string> InterfacesNames,
+            List<string> InterfacesAddresses)
+        {
+            List<Interface> interfaces = _helper.GetInterfacesFromNameAddress(InterfacesNames, InterfacesAddresses);
+            List<string> cmdList = _commandsRepository.GetCmdList(device);
+            var mydevice = await _devicesRepository.GetAsync(device.Id);
+            return RedirectToAction("Index", "Devices", new { message = "" });
         }
     }
 }
