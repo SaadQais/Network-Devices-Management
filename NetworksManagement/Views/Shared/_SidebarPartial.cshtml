@@ -9,7 +9,7 @@
         </div>
         <div class="sidebar-wrapper">
             <ul class="nav">
-                <li class="nav-item @(ViewBag.Current == "Dashboard" ? "active" : "")">
+                <li class="nav-item @(ViewBag.Current == "Home" ? "active" : "")">
                     <a class="nav-link" asp-controller="Home" asp-action="Index">
                         <i class="material-icons">dashboard</i>
                         <p>Dashboard</p>
@@ -36,7 +36,7 @@
                 <li class="nav-item @(ViewBag.Current == "Categories" ? "active" : "")">
                     <a class="nav-link" asp-controller="Categories" asp-action="Index">
                         <i class="material-icons">category</i>
-                        <p>Devices</p>
+                        <p>Categories</p>
                     </a>
                 </li>
                 <li class="nav-item @(ViewBag.Current == "Devices" ? "active" : "")">

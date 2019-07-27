@@ -38,6 +38,7 @@ namespace NetworksManagement.Controllers
             var devices = await _devicesRepository.GetAll().ToListAsync();
 
             ViewBag.Message = message;
+            ViewBag.Current = "Devices";
 
             return View(devices);
         }

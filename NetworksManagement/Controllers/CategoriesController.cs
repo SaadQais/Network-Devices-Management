@@ -21,6 +21,7 @@ namespace NetworksManagement.Controllers
         {
             var categories = await _categoriesRepository.GetAll().ToListAsync();
 
+            ViewBag.Current = "Categories";
             return View(categories);
         }
 

@@ -37,6 +37,7 @@ namespace NetworksManagement.Controllers
             var groups = await _groupsRepository.GetAll().ToListAsync();
             GroupVM.Groups = groups;
 
+            ViewBag.Current = "Groups";
             return View(GroupVM);
         }
 

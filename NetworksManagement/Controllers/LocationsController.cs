@@ -23,6 +23,7 @@ namespace NetworksManagement.Controllers
         {
             var locations = await _locationsRepository.GetAll().ToListAsync();
 
+            ViewBag.Current = "Locations";
             return View(locations);
         }
 
