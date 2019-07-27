@@ -89,13 +89,17 @@ namespace NetworksManagement.Controllers.Api
         }
 
         [HttpPost]
-        public async Task<IActionResult> ApplySetting(Device device, List<string> InterfacesNames,
-            List<string> InterfacesAddresses)
+        public IActionResult ApplySetting(Device device, List<string> InterfacesNames, List<string> InterfacesAddresses)
         {
             List<Interface> interfaces = _helper.GetInterfacesFromNameAddress(InterfacesNames, InterfacesAddresses);
             List<string> cmdList = _commandsRepository.GetCmdList(device);
-            var mydevice = await _devicesRepository.GetAsync(device.Id);
-            return RedirectToAction("Index", "Devices", new { message = "" });
+
+            foreach(var cmd in cmdList)
+            {
+                _serviceAccessor("M").ExecuteSSHCommand(device, cmd, "admin", "");
+            }
+
+            return RedirectToAction("Index", "Devices", new { message = "Settings Applied" });
         }
     }
 }
