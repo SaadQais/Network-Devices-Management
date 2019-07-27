@@ -1,0 +1,48 @@
+﻿@model IEnumerable<NetworksManagement.Data.Models.Category>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header card-header-primary">
+                <div class="row">
+                    <div class="col-6">
+                        <h3 class="card-title ">Categories List</h3>
+                    </div>
+                    <div class="col-6 pull-right">
+                        <div class="text-right">
+                            <a asp-action="Create" class="btn btn-info"><i class="material-icons">add</i> &nbsp; New Category</a>
+                        </div>
+                    </div>
+                </div>
+                <br />
+            </div>
+            <br />
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class=" text-primary">
+                            <tr>
+                                <th>@Html.DisplayNameFor(m => m.FirstOrDefault().Name)</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@Html.DisplayFor(m => item.Name)</td>
+                                    <partial name="_TableButtonsPartial" model="item.Id" />
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

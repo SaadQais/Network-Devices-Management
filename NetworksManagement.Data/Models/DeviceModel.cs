@@ -16,7 +16,7 @@ namespace NetworksManagement.Data.Models
         public bool IsCore { get; set; }
 
         public int CategoryId { get; set; }
-        [ForeignKey("DeviceId")]
+        [ForeignKey("CategoryId")]
         public virtual Category Category { get; set; }
     }
 }

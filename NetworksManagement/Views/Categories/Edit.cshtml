@@ -1,0 +1,46 @@
+﻿@model NetworksManagement.Data.Models.Category
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header card-header-primary">
+                <div class="row">
+                    <div class="col-6">
+                        <h3 class="card-title ">Edit  Category</h3>
+                    </div>
+                </div>
+                <br />
+            </div>
+            <br />
+            <div class="card-body">
+                <form method="post" asp-action="Edit">
+                    <div class="p-4 border rounded">
+                        <input type="hidden" asp-for="Id" />
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="form-group row">
+                            <div class="col-md-2">
+                                <label asp-for="Name"></label>
+                            </div>
+                            <div class="col-md-5">
+                                <input asp-for="Name" class="form-control" />
+                            </div>
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-primary" asp-route-id="@Model.Id" value="Update" />
+                            <a asp-action="Index" class="btn btn-success">Back To List</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+

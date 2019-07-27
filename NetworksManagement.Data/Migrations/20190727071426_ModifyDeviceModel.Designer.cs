@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetworksManagement.Data;
 
 namespace NetworksManagement.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190727071426_ModifyDeviceModel")]
+    partial class ModifyDeviceModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -207,9 +209,9 @@ namespace NetworksManagement.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("GroupId");
+                    b.Property<int>("DeviceModelId");
 
-                    b.Property<int>("ModelId");
+                    b.Property<int>("GroupId");
 
                     b.Property<string>("Name")
                         .IsRequired();
@@ -218,9 +220,9 @@ namespace NetworksManagement.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GroupId");
+                    b.HasIndex("DeviceModelId");
 
-                    b.HasIndex("ModelId");
+                    b.HasIndex("GroupId");
 
                     b.ToTable("Devices");
                 });
@@ -372,15 +374,15 @@ namespace NetworksManagement.Data.Migrations
 
             modelBuilder.Entity("NetworksManagement.Data.Models.Device", b =>
                 {
-                    b.HasOne("NetworksManagement.Data.Models.Group", "Group")
-                        .WithMany("Devices")
-                        .HasForeignKey("GroupId")
+                    b.HasOne("NetworksManagement.Data.Models.DeviceModel", "DeviceModel")
+                        .WithMany()
+                        .HasForeignKey("DeviceModelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("NetworksManagement.Data.Models.DeviceModel", "Model")
-                        .WithMany()
-                        .HasForeignKey("ModelId")
+                    b.HasOne("NetworksManagement.Data.Models.Group", "Group")
+                        .WithMany("Devices")
+                        .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
