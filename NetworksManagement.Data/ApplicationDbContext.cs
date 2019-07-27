@@ -28,6 +28,7 @@ namespace NetworksManagement.Data
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Device> Devices { get; set; }
         public DbSet<Interface> Interfaces { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

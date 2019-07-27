@@ -20,6 +20,10 @@ namespace NetworksManagement.Data.Models
         [ForeignKey("GroupId")]
         public virtual Group Group { get; set; }
         
+        public int DeviceModelId { get; set; }
+        [ForeignKey("DeviceModelId")]
+        public virtual DeviceModel DeviceModel { get; set; }
+
         public DeviceType Type { get; set; }
 
         public virtual ICollection<Interface> Interfaces { get; set; }
