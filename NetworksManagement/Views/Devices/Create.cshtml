@@ -47,6 +47,15 @@
 
                             <div class="form-group row">
                                 <div class="col-md-2">
+                                    <label asp-for="Device.ModelId" class="control-label"></label>
+                                </div>
+                                <div class="col-md-5">
+                                    <select asp-for="Device.ModelId" class="form-control" asp-items="Model.Models.ToSelectListItem()"></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-md-2">
                                     <label asp-for="Device.Group.Name" class="control-label"></label>
                                 </div>
                                 <div class="col-md-5">

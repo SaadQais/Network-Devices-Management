@@ -14,17 +14,19 @@ namespace NetworksManagement.Controllers
         private readonly IDevicesRepository _devicesRepository;
         private readonly IGroupsRepository _groupsRepository;
         private readonly IInterfacesRepository _interfacesRepository;
+        private readonly IModelRepository _modelRepository;
         public readonly IHelper _helper;
 
         [BindProperty]
         public DeviceViewModel DeviceVM { get; set; }
 
         public DevicesController(IDevicesRepository devicesRepository, IGroupsRepository groupsRepository,
-            IInterfacesRepository interfacesRepository, IHelper helper)
+            IInterfacesRepository interfacesRepository, IModelRepository modelRepository, IHelper helper)
         {
             _devicesRepository = devicesRepository;
             _groupsRepository = groupsRepository;
             _interfacesRepository = interfacesRepository;
+            _modelRepository = modelRepository;
             _helper = helper;
 
             DeviceVM = new DeviceViewModel
@@ -63,12 +65,14 @@ namespace NetworksManagement.Controllers
         public async Task<IActionResult> Create()
         {
             DeviceVM.Groups = await _groupsRepository.GetAll().ToListAsync();
+            DeviceVM.Models = await _modelRepository.GetAll().ToListAsync();
+
             return View(DeviceVM);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,GroupId,Type")] Device device, List<string> InterfacesNames,
+        public async Task<IActionResult> Create([Bind("Id,Name,GroupId,Type,ModelId")] Device device, List<string> InterfacesNames,
             List<string> InterfacesAddresses)
         {
             if (ModelState.IsValid)
@@ -95,13 +99,14 @@ namespace NetworksManagement.Controllers
                 return NotFound();
             }
             DeviceVM.Groups = await _groupsRepository.GetAll().ToListAsync();
+            DeviceVM.Models = await _modelRepository.GetAll().ToListAsync();
 
             return View(DeviceVM);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,GroupId,Type")] Device device, List<string> InterfacesNames,
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,GroupId,Type,ModelId")] Device device, List<string> InterfacesNames,
             List<string> InterfacesAddresses)
         {
             if (id != device.Id)

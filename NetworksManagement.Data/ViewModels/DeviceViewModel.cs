@@ -11,5 +11,6 @@ namespace NetworksManagement.Data.ViewModels
         public Device Device { get; set; }
         public IEnumerable<Group> Groups { get; set; }
         public IEnumerable<Location> Locations { get; set; }
+        public IEnumerable<DeviceModel> Models { get; set; }
     }
 }

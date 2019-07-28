@@ -32,14 +32,14 @@ namespace NetworksManagement.Infrastructure
 
         public IQueryable<Device> GetAll()
         {
-            var devices = _context.Devices.Include(d => d.Group).OrderBy(g => g.Name);
+            var devices = _context.Devices.Include(d => d.Model).Include(d => d.Group).OrderBy(g => g.Name);
 
             return devices;
         }
 
         public async Task<Device> GetAsync(int? deviceId)
         {
-            var device = await _context.Devices.Include(d => d.Group).Include(d => d.Interfaces)
+            var device = await _context.Devices.Include(d => d.Model).Include(d => d.Group).Include(d => d.Interfaces)
                 .FirstOrDefaultAsync(l => l.Id == deviceId);
 
             return device;

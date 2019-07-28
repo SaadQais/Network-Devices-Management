@@ -47,6 +47,16 @@
 
                         <div class="form-group row">
                             <div class="col-md-2">
+                                <label asp-for="Device.ModelId"></label>
+                            </div>
+                            <div class="col-md-5">
+                                <select asp-for="Device.ModelId" class="form-control"
+                                        asp-items="Model.Models.ToSelectListItem(Model.Device.ModelId)"></select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-2">
                                 <label asp-for="Device.GroupId"></label>
                             </div>
                             <div class="col-md-5">
@@ -106,10 +116,10 @@
                                 </table>
                             </div>
                         </div>
-                        
+
                         <div class="form-group">
                             <input type="submit" asp-action="Edit" class="btn btn-primary" title="update informations" asp-route-id="@Model.Device.Id" value="Update" />
-                            <input type="submit"  asp-action="ApplySetting" asp-controller="Tools"  class="btn btn-info" title="apply settings to device"  value="Apply" />
+                            <input type="submit" asp-action="ApplySetting" asp-controller="Tools" class="btn btn-info" title="apply settings to device" value="Apply" />
                             <a asp-action="Index" class="btn btn-success">Back To List</a>
                         </div>
                     </div>
