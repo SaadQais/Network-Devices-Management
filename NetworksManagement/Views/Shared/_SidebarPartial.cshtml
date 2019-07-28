@@ -39,6 +39,12 @@
                         <p>Categories</p>
                     </a>
                 </li>
+                <li class="nav-item @(ViewBag.Current == "Models" ? "active" : "")">
+                    <a class="nav-link" asp-controller="Models" asp-action="Index">
+                        <i class="material-icons">device_hub</i>
+                        <p>Models</p>
+                    </a>
+                </li>
                 <li class="nav-item @(ViewBag.Current == "Devices" ? "active" : "")">
                     <a class="nav-link" asp-controller="Devices" asp-action="Index">
                         <i class="material-icons">devices</i>

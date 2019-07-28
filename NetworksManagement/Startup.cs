@@ -40,6 +40,7 @@ namespace NetworksManagement
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddDefaultIdentity<IdentityUser>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -50,6 +51,7 @@ namespace NetworksManagement
             services.AddTransient<IInterfacesRepository, InterfacesRepository>();
             services.AddTransient<ICommandsRepository, CommandsRepository>();
             services.AddTransient<ICategoriesRepository, CategoriesRepository>();
+            services.AddTransient<IModelRepository, ModelRepository>();
             services.AddTransient<IHelper, Helper>();
 
             services.AddTransient<MikrotikTools>();

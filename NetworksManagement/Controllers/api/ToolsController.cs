@@ -65,11 +65,13 @@ namespace NetworksManagement.Controllers.Api
 
             foreach (var ethernet in device.Interfaces)
             {
-                using var ping = new Ping();
-                PingReply pingReply = await ping.SendPingAsync(ethernet.Address, 1000);
+                using (var ping = new Ping())
+                {
+                    PingReply pingReply = await ping.SendPingAsync(ethernet.Address, 1000);
 
-                if (pingReply.Status == IPStatus.Success)
-                    return true;
+                    if (pingReply.Status == IPStatus.Success)
+                        return true;
+                }
             }
 
             return false;

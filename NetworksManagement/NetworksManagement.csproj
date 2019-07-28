@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <UserSecretsId>aspnet-NetworksManagement-70028EF0-0F17-44B2-BD39-D49402DA04BC</UserSecretsId>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
 
 
