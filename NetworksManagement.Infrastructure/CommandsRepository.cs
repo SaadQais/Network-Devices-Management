@@ -22,19 +22,46 @@ namespace NetworksManagement.Infrastructure
             return cmdList;
         }
 
-        public string RunAutoUpdate()
+        public string GetAutoUpdate()
         {
             return $"system package update install ;";
+        }
+
+        public List<string> GetBackupScript(Device device)
+        {
+            List<string> cmdList = new List<string>();
+
+            string script = @":local FTPServer ""192.168.10.28""
+                        :local FTPPort 21 
+                        :local FTPUser ""Administrator""
+                        :local FTPPass ""Messi170100"" 
+                        :local fname ([/system identity get name]) 
+                        :local sfname (""/"".$fname) 
+                        /export file=($sfname) 
+                        :local backupFileName """" 
+                        :foreach backupFile in=[/file find] do={ 
+                            :set backupFileName (""/"".[/file get $backupFile name])
+                            :if ([:typeof [:find $backupFileName $sfname]] != ""nil"") do={ 
+                                /tool fetch address=$FTPServer port=$FTPPort src-path=$backupFileName user=$FTPUser mode=ftp password=$FTPPass dst-path=$backupFileName upload=yes 
+                        } 
+                        }
+                        :delay 5s;
+                        :foreach i in=[/file find] do={:if ([:typeof [:find [/file get $i name] [/system identity get name]]]!=""nil"") do={/file remove $i}}
+                        :log info message=""Successfully removed Temporary Backup Files""
+                        :log info message=""Automatic Backup Completed Successfully""
+                        ";
+
+            string backupName = $"backup -{ device.Name}";
+
+            cmdList.Add($"system script add name={backupName} source={script}  ;" );
+            cmdList.Add($"system script run number={backupName} ;");
+
+            return cmdList;
         }
 
         private string SetIdentity(string identity)
         {
             return $"system identity set name= { identity } ;";
-        }
-
-        private string AddGateway(string gateway)
-        {
-            return $"ip route add gateway= { gateway } ;";
         }
 
         private string AddIpAddress(string ip, string ether)

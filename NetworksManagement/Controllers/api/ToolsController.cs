@@ -95,6 +95,20 @@ namespace NetworksManagement.Controllers.Api
             return RedirectToAction("Index", "Devices", new { message = result });
         }
 
+        [HttpGet]
+        public async Task<IActionResult> AutoUpdate(int? id)
+        {
+            var device = await _devicesRepository.GetAsync(id);
+
+            if (device == null)
+                return NotFound();
+
+            string result = _serviceAccessor("M").ExecuteSSHCommand(device, _commandsRepository.RunAutoUpdate(),
+                "admin", "");
+
+            return RedirectToAction("Index", "Devices", new { message = result });
+        }
+
         [HttpPost]
         public async Task<IActionResult> RunCommand(int? deviceId, string commandTxt, string username, string password)
         {
