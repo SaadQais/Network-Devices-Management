@@ -46,17 +46,21 @@ namespace NetworksManagement.Controllers.Api
 
             var availableList = new List<string>();
 
-            foreach (var ip in IPAddressRange.Parse(group.IpRange))
+            var range = IPAddressRange.Parse(group.IpRange).ToCidrString();
+
+            string subnet = range.Split('/')[1];
+
+            foreach (var ip in range)
             {
                 if (!interfaces.Any(i => i.Address.Contains(ip.ToString())))
-                    availableList.Add(ip.ToString());
+                    availableList.Add(ip.ToString() + "/" + subnet);
             }
 
             return Ok(availableList);
         }
 
         [HttpGet]
-        public async Task<bool> GetDeviceStatus(int? id)
+        public async Task<bool> DeviceStatus(int? id)
         {
             var device = await _devicesRepository.GetAsync(id);
 
@@ -77,6 +81,20 @@ namespace NetworksManagement.Controllers.Api
             return false;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> AutoUpdate(int? id)
+        {
+            var device = await _devicesRepository.GetAsync(id);
+
+            if (device == null)
+                return NotFound();
+
+            string result = _serviceAccessor("M").ExecuteSSHCommand(device, _commandsRepository.RunAutoUpdate(),
+                "admin", "");
+
+            return RedirectToAction("Index", "Devices", new { message = result });
+        }
+
         [HttpPost]
         public async Task<IActionResult> RunCommand(int? deviceId, string commandTxt, string username, string password)
         {
@@ -94,6 +112,8 @@ namespace NetworksManagement.Controllers.Api
         public IActionResult ApplySetting(Device device, List<string> InterfacesNames, List<string> InterfacesAddresses)
         {
             List<Interface> interfaces = _helper.GetInterfacesFromNameAddress(InterfacesNames, InterfacesAddresses);
+            device.Interfaces = interfaces;
+
             List<string> cmdList = _commandsRepository.GetCmdList(device);
 
             foreach(var cmd in cmdList)

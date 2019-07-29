@@ -22,9 +22,14 @@ namespace NetworksManagement.Infrastructure
             return cmdList;
         }
 
+        public string RunAutoUpdate()
+        {
+            return $"system package update install ;";
+        }
+
         private string SetIdentity(string identity)
         {
-            return $"system identity set name = { identity } ;";
+            return $"system identity set name= { identity } ;";
         }
 
         private string AddGateway(string gateway)
@@ -34,7 +39,7 @@ namespace NetworksManagement.Infrastructure
 
         private string AddIpAddress(string ip, string ether)
         {
-            return $"ip address add address = { ip } interface= { ether } ;";
+            return $"ip address add address= { ip } interface= { ether } ;";
         }
 
     }

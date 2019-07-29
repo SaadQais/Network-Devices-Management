@@ -36,7 +36,7 @@ namespace NetworksManagement.Infrastructure
 
             return devices;
         }
-
+         
         public async Task<Device> GetAsync(int? deviceId)
         {
             var device = await _context.Devices.Include(d => d.Model).Include(d => d.Group).Include(d => d.Interfaces)

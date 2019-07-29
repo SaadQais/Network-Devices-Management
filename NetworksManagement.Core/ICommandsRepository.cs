@@ -8,5 +8,6 @@ namespace NetworksManagement.Core
     public interface ICommandsRepository
     {
         public List<string> GetCmdList(Device device);
+        public string RunAutoUpdate();
     }
 }

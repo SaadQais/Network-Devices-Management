@@ -119,7 +119,7 @@
                     let id = $('input[type=hidden]', $(this).closest("td")).val();
                     let label = $(this);
 
-                    const url = "https://localhost:44302/Tools/GetDeviceStatus/" + id;
+                    const url = "https://localhost:44302/Tools/DeviceStatus/" + id;
 
                     $.getJSON(url, function (data) {
                         if (data == true) {
@@ -160,7 +160,7 @@
             function showNotification(from, align){
               $.notify({
                   icon: "add_alert",
-                  message: " Script run on device <b>Device Name</b>"
+                  message: "@ViewBag.Message"
 
               },{
                   type: 'success',
