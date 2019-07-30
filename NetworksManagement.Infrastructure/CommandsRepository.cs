@@ -22,7 +22,7 @@ namespace NetworksManagement.Infrastructure
             return cmdList;
         }
 
-        public string GetAutoUpdate()
+        public string RunAutoUpdate()
         {
             return $"system package update install ;";
         }
@@ -55,6 +55,7 @@ namespace NetworksManagement.Infrastructure
 
             cmdList.Add($"system script add name={backupName} source={script}  ;" );
             cmdList.Add($"system script run number={backupName} ;");
+            cmdList.Add($"system script remove number={backupName} ;");
 
             return cmdList;
         }

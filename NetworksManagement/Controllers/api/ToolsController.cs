@@ -96,17 +96,21 @@ namespace NetworksManagement.Controllers.Api
         }
 
         [HttpGet]
-        public async Task<IActionResult> AutoUpdate(int? id)
+        public async Task<IActionResult> Backup(int? id)
         {
             var device = await _devicesRepository.GetAsync(id);
 
             if (device == null)
                 return NotFound();
 
-            string result = _serviceAccessor("M").ExecuteSSHCommand(device, _commandsRepository.RunAutoUpdate(),
-                "admin", "");
+            List<string> cmdList = _commandsRepository.GetBackupScript(device);
 
-            return RedirectToAction("Index", "Devices", new { message = result });
+            foreach (var cmd in cmdList)
+            {
+                _serviceAccessor("M").ExecuteSSHCommand(device, cmd, "admin", "");
+            }
+
+            return RedirectToAction("Index", "Devices", new { message = "Backup task executed" });
         }
 
         [HttpPost]

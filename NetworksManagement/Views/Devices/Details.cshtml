@@ -58,7 +58,9 @@
                         <div class="col-2 offset-2">
                             <a asp-action="AutoUpdate" asp-controller="Tools" asp-route-id="@Model.Device.Id" class="btn btn-block btn-light">
                                 <i class="material-icons">update</i> &nbsp; Update</a>
-                            
+                            <a asp-action="Backup" asp-controller="Tools" asp-route-id="@Model.Device.Id" class="btn btn-block btn-light">
+                                <i class="material-icons">backup</i> &nbsp; Backup
+                            </a>
                         </div>
                     </div>
                 </div>
