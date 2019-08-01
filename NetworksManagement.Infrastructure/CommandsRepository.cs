@@ -31,10 +31,10 @@ namespace NetworksManagement.Infrastructure
         {
             List<string> cmdList = new List<string>();
 
-            string script = @":local FTPServer ""192.168.10.28""
+            string script = @"{:local FTPServer ""10.1.90.224""
                         :local FTPPort 21 
                         :local FTPUser ""Administrator""
-                        :local FTPPass ""Messi170100"" 
+                        :local FTPPass ""SoftwareR2"" 
                         :local fname ([/system identity get name]) 
                         :local sfname (""/"".$fname) 
                         /export file=($sfname) 
@@ -49,11 +49,11 @@ namespace NetworksManagement.Infrastructure
                         :foreach i in=[/file find] do={:if ([:typeof [:find [/file get $i name] [/system identity get name]]]!=""nil"") do={/file remove $i}}
                         :log info message=""Successfully removed Temporary Backup Files""
                         :log info message=""Automatic Backup Completed Successfully""
-                        ";
+                        ;}";
 
-            string backupName = $"backup -{ device.Name}";
-
-            cmdList.Add($"system script add name={backupName} source={script}  ;" );
+            string backupName = $"backup";
+            
+            cmdList.Add($"system script add name={backupName} source= { script }" );
             cmdList.Add($"system script run number={backupName} ;");
             cmdList.Add($"system script remove number={backupName} ;");
 

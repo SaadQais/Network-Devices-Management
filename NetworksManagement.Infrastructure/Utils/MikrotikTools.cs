@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace NetworksManagement.Infrastructure.Utils
 {
@@ -20,7 +21,6 @@ namespace NetworksManagement.Infrastructure.Utils
             {
                 try
                 {
-
                     using SshClient ssh = new SshClient(item.Address, username ?? "", password ?? "");
                     {
                         ssh.Connect();
