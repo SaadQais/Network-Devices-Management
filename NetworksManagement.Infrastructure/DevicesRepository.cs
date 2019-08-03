@@ -55,10 +55,13 @@ namespace NetworksManagement.Infrastructure
         {
             var deviceFromDb = _context.Devices.Include(d => d.Interfaces).FirstOrDefault(d => d.Id == device.Id);
 
-            deviceFromDb.Interfaces = interfaces;
+            if(interfaces != null)
+                deviceFromDb.Interfaces = interfaces;
+
             deviceFromDb.Name = device.Name;
             deviceFromDb.GroupId = device.GroupId;
             deviceFromDb.Type = device.Type;
+            deviceFromDb.Version = device.Version;
 
             _context.Update(deviceFromDb);
             await _context.SaveChangesAsync();

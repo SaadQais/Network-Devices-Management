@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetworksManagement", "Netwo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetworksManagement.Data", "NetworksManagement.Data\NetworksManagement.Data.csproj", "{288C6F88-E85D-4896-B615-AF39E60BA0BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworksManagement.Core", "NetworksManagement.Core\NetworksManagement.Core.csproj", "{75DB9251-BF60-4DFE-BCA7-EAFDD1BDC319}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetworksManagement.Core", "NetworksManagement.Core\NetworksManagement.Core.csproj", "{75DB9251-BF60-4DFE-BCA7-EAFDD1BDC319}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworksManagement.Infrastructure", "NetworksManagement.Infrastructure\NetworksManagement.Infrastructure.csproj", "{D59E96C4-0FAB-4328-B5D7-0D5A3B7243C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetworksManagement.Infrastructure", "NetworksManagement.Infrastructure\NetworksManagement.Infrastructure.csproj", "{D59E96C4-0FAB-4328-B5D7-0D5A3B7243C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworksManagement.Services", "NetworksManagement.Services\NetworksManagement.Services.csproj", "{D99EF242-1672-409D-88FD-1F927FAA3F7D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{D59E96C4-0FAB-4328-B5D7-0D5A3B7243C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D59E96C4-0FAB-4328-B5D7-0D5A3B7243C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D59E96C4-0FAB-4328-B5D7-0D5A3B7243C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D99EF242-1672-409D-88FD-1F927FAA3F7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D99EF242-1672-409D-88FD-1F927FAA3F7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D99EF242-1672-409D-88FD-1F927FAA3F7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D99EF242-1672-409D-88FD-1F927FAA3F7D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -9,6 +9,7 @@ namespace NetworksManagement.Core
     {
         public List<string> GetCmdList(Device device);
         public string RunAutoUpdate();
+        public string GetDeviceVersion();
         public List<string> GetBackupScript(Device device);
     }
 }

@@ -30,6 +30,7 @@
                             <tr>
                                 <th>@Html.DisplayNameFor(m => m.FirstOrDefault().Name)</th>
                                 <th>@Html.DisplayNameFor(m => m.FirstOrDefault().Type)</th>
+                                <th>@Html.DisplayNameFor(m => m.FirstOrDefault().Version)</th>
                                 <th>@Html.DisplayNameFor(m => m.FirstOrDefault().ModelId)</th>
                                 <th>@Html.DisplayNameFor(m => m.FirstOrDefault().Group)</th>
                                 <th>@Html.DisplayName("Status")</th>
@@ -43,6 +44,7 @@
                             <tr>
                                 <td>@Html.DisplayFor(m => item.Name)</td>
                                 <td>@Html.DisplayFor(m => item.Type)</td>
+                                <td>@Html.DisplayFor(m => item.Version)</td>
                                 <td>@Html.DisplayFor(m => item.Model.Name)</td>
                                 <td>@Html.DisplayFor(m => item.Group.Name)</td>
                                 <td>

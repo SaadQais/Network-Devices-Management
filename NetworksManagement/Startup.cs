@@ -16,6 +16,7 @@ using NetworksManagement.Core;
 using NetworksManagement.Infrastructure;
 using NetworksManagement.Infrastructure.Utils;
 using NetworksManagement.Infrastructure.Extensions;
+using NetworksManagement.Services;
 
 namespace NetworksManagement
 {
@@ -68,6 +69,8 @@ namespace NetworksManagement
                         throw new KeyNotFoundException(); 
                 }
             });
+
+            services.AddHostedService<DevicesHostedService>();
 
             services.AddControllersWithViews()
                 .AddNewtonsoftJson();

@@ -27,6 +27,11 @@ namespace NetworksManagement.Infrastructure
             return $"system package update install ;";
         }
 
+        public string GetDeviceVersion()
+        {
+            return $"system resource print ;";
+        }
+
         public List<string> GetBackupScript(Device device)
         {
             List<string> cmdList = new List<string>();

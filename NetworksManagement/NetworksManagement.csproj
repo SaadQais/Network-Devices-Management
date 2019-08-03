@@ -28,6 +28,7 @@
     <ProjectReference Include="..\NetworksManagement.Core\NetworksManagement.Core.csproj" />
     <ProjectReference Include="..\NetworksManagement.Data\NetworksManagement.Data.csproj" />
     <ProjectReference Include="..\NetworksManagement.Infrastructure\NetworksManagement.Infrastructure.csproj" />
+    <ProjectReference Include="..\NetworksManagement.Services\NetworksManagement.Services.csproj" />
   </ItemGroup>
 
 </Project>

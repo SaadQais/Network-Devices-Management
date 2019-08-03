@@ -15,6 +15,8 @@ namespace NetworksManagement.Data.Models
         [Required]
         public string Name { get; set; }
 
+        public string Version { get; set; }
+
         [Display(Name = "Group")]
         public int GroupId { get; set; }
         [ForeignKey("GroupId")]

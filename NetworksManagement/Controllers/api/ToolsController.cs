@@ -141,5 +141,22 @@ namespace NetworksManagement.Controllers.Api
 
             return RedirectToAction("Index", "Devices", new { message = "Settings Applied" });
         }
+
+        [HttpPost]
+        public async Task<IActionResult> DeviceVersion([FromBody] Device device)
+        {
+            var deviceFromDb = await _devicesRepository.GetAsync(device.Id);
+
+            if (deviceFromDb == null)
+                return NotFound();
+
+            string result = _serviceAccessor("M").ExecuteSSHCommand(deviceFromDb, _commandsRepository.GetDeviceVersion(),
+                "admin", "", filter: "version");
+
+            deviceFromDb.Version = result;
+            await _devicesRepository.UpdateAsync(deviceFromDb);
+
+            return RedirectToAction("Index", "Devices", new { message = result });
+        }
     }
 }
