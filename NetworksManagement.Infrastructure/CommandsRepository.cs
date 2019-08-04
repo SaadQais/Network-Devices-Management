@@ -29,7 +29,12 @@ namespace NetworksManagement.Infrastructure
 
         public string GetDeviceVersion()
         {
-            return $"system resource print ;";
+            return $" :put [system resource get version] ;";
+        }
+
+        public string GetDeviceUptime()
+        {
+            return $" :put [system resource get uptime] ;";
         }
 
         public List<string> GetBackupScript(Device device)

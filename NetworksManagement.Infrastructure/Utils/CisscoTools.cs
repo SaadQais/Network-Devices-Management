@@ -10,7 +10,7 @@ namespace NetworksManagement.Infrastructure.Utils
 {
     public class CisscoTools : IDeviceTools
     {
-        public string ExecuteSSHCommand(Device device, string script, string username, string password, string filter = "")
+        public (bool, string) ExecuteSSHCommand(Device device, string script, string username, string password)
         {
             string exceptionMessage = "";
 
@@ -29,7 +29,7 @@ namespace NetworksManagement.Infrastructure.Utils
 
                         ssh.Disconnect();
 
-                        return response.Result;
+                        return (true, response.Result);
                     }
                 }
                 catch (Exception ex)
@@ -38,7 +38,7 @@ namespace NetworksManagement.Infrastructure.Utils
                 }
             }
 
-            return exceptionMessage;
+            return (false, exceptionMessage);
         }
 
     }

@@ -7,6 +7,6 @@ namespace NetworksManagement.Core
 {
     public interface IDeviceTools
     {
-        public string ExecuteSSHCommand(Device device, string script, string username, string password, string filter = "");
+        public (bool, string) ExecuteSSHCommand(Device device, string script, string username, string password);
     }
 }

@@ -34,6 +34,7 @@
                                 <th>@Html.DisplayNameFor(m => m.FirstOrDefault().ModelId)</th>
                                 <th>@Html.DisplayNameFor(m => m.FirstOrDefault().Group)</th>
                                 <th>@Html.DisplayName("Status")</th>
+                                <th>@Html.DisplayName("Uptime")</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -50,6 +51,10 @@
                                 <td>
                                     <input type="hidden" class="deviceHidden" value="@item.Id" />
                                     <label class="statuslbl">Getting Status</label>
+                                </td>
+                                <td>
+                                    <input type="hidden" class="deviceHidden" value="@item.Id" />
+                                    <label class="uptimelbl">Getting Uptime</label>
                                 </td>
                                 <td class="td-actions text-right">
                                     <a href="@Url.Action("Details", new { id = item.Id } )" rel="tooltip" class="btn btn-info">
@@ -119,16 +124,30 @@
             setInterval(function () {
                 $(".statuslbl").each(function () {
                     let id = $('input[type=hidden]', $(this).closest("td")).val();
-                    let label = $(this);
+                    let statuslabel = $(this);
 
                     const url = "https://localhost:44302/Tools/DeviceStatus/" + id;
 
                     $.getJSON(url, function (data) {
                         if (data == true) {
-                            label.html('<i class="material-icons">wifi</i>');
+                            statuslabel.html('<i class="material-icons">wifi</i>');
                         } else {
-                            label.html('<i class="material-icons">wifi_off</i>');
+                            statuslabel.html('<i class="material-icons">wifi_off</i>');
                         }
+                    });
+                });
+            }, 5000);
+
+            setInterval(function () {
+                $(".uptimelbl").each(function () {
+                    let id = $('input[type=hidden]', $(this).closest("td")).val();
+                    let uptimelabel = $(this);
+
+                    let uptimeurl = "https://localhost:44302/Tools/DeviceUptime/" + id;
+                    console.log(uptimeurl);
+                    $.getJSON(uptimeurl, function (data) {
+                        console.log(JSON.stringify(data));
+                        uptimelabel.html(data);
                     });
                 });
             }, 5000);

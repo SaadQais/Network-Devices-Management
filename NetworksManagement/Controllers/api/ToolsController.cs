@@ -82,6 +82,20 @@ namespace NetworksManagement.Controllers.Api
         }
 
         [HttpGet]
+        public async Task<IActionResult> DeviceUptime(int? id)
+        {
+            var device = await _devicesRepository.GetAsync(id);
+
+            if (device == null)
+                return Json("unknown");
+
+            (bool, string) result = _serviceAccessor("M").ExecuteSSHCommand(device, _commandsRepository.GetDeviceUptime(),
+                "admin", "");
+
+            return Json((result.Item1 == true) ? result.Item2.Replace("\r\n", "") : "unknown");
+        }
+
+        [HttpGet]
         public async Task<IActionResult> AutoUpdate(int? id)
         {
             var device = await _devicesRepository.GetAsync(id);
@@ -89,10 +103,10 @@ namespace NetworksManagement.Controllers.Api
             if (device == null)
                 return NotFound();
 
-            string result = _serviceAccessor("M").ExecuteSSHCommand(device, _commandsRepository.RunAutoUpdate(),
+            (bool, string) result = _serviceAccessor("M").ExecuteSSHCommand(device, _commandsRepository.RunAutoUpdate(),
                 "admin", "");
 
-            return RedirectToAction("Index", "Devices", new { message = result });
+            return RedirectToAction("Index", "Devices", new { message = result.Item2 });
         }
 
         [HttpGet]
@@ -121,9 +135,9 @@ namespace NetworksManagement.Controllers.Api
             if (device == null)
                 return NotFound();
 
-            string result = _serviceAccessor("M").ExecuteSSHCommand(device, commandTxt, username, password);
+            (bool, string) result = _serviceAccessor("M").ExecuteSSHCommand(device, commandTxt, username, password);
 
-            return RedirectToAction("Index", "Devices", new { message = result });
+            return RedirectToAction("Index", "Devices", new { message = result.Item2 });
         }
 
         [HttpPost]
@@ -150,10 +164,12 @@ namespace NetworksManagement.Controllers.Api
             if (deviceFromDb == null)
                 return NotFound();
 
-            string result = _serviceAccessor("M").ExecuteSSHCommand(deviceFromDb, _commandsRepository.GetDeviceVersion(),
-                "admin", "", filter: "version");
+            (bool, string) result = _serviceAccessor("M").ExecuteSSHCommand(deviceFromDb, 
+                _commandsRepository.GetDeviceVersion(),"admin", "");
 
-            deviceFromDb.Version = result;
+            if (result.Item1 == true)
+                deviceFromDb.Version = result.Item2;
+
             await _devicesRepository.UpdateAsync(deviceFromDb);
 
             return RedirectToAction("Index", "Devices", new { message = result });

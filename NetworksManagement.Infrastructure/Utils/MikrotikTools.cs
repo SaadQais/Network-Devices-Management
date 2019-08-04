@@ -11,7 +11,7 @@ namespace NetworksManagement.Infrastructure.Utils
 {
     public class MikrotikTools : IDeviceTools
     {
-        public string ExecuteSSHCommand(Device device, string script, string username, string password, string filter = "")
+        public (bool, string) ExecuteSSHCommand(Device device, string script, string username, string password)
         {
             string exceptionMessage = "";
 
@@ -29,15 +29,7 @@ namespace NetworksManagement.Infrastructure.Utils
 
                         ssh.Disconnect();
 
-                        if(!string.IsNullOrEmpty(filter))
-                        {
-                            string[] lines = response.Result.Split('\n');
-                            string version = lines[1].Replace("\r", "");
-
-                            return version.Split(':')[1];
-                        }
-
-                        return response.Result;
+                        return (true, response.Result);
                     }
                 }
                 catch (Exception ex)
@@ -46,7 +38,7 @@ namespace NetworksManagement.Infrastructure.Utils
                 }
             }
 
-            return exceptionMessage;
+            return (false, exceptionMessage);
         }
     }
 }
