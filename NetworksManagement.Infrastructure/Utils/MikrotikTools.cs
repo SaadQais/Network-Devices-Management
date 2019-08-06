@@ -29,7 +29,10 @@ namespace NetworksManagement.Infrastructure.Utils
 
                         ssh.Disconnect();
 
-                        return (true, response.Result);
+                        if(response.ExitStatus == 0)
+                            return (true, response.Result);
+
+                        exceptionMessage = response.Result;
                     }
                 }
                 catch (Exception ex)

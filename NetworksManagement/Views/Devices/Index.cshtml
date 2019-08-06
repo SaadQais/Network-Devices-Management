@@ -144,9 +144,8 @@
                     let uptimelabel = $(this);
 
                     let uptimeurl = "https://localhost:44302/Tools/DeviceUptime/" + id;
-                    console.log(uptimeurl);
+
                     $.getJSON(uptimeurl, function (data) {
-                        console.log(JSON.stringify(data));
                         uptimelabel.html(data);
                     });
                 });
@@ -181,7 +180,7 @@
             function showNotification(from, align){
               $.notify({
                   icon: "add_alert",
-                  message: "@ViewBag.Message"
+                  message: $('#message').val()
 
               },{
                   type: 'success',

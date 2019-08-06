@@ -70,6 +70,11 @@ namespace NetworksManagement.Infrastructure
             return cmdList;
         }
 
+        public string AddDeviceUser(string name, string group, string password)
+        {
+            return $"user add name={name} group={group} password={password}";
+        }
+
         private string SetIdentity(string identity)
         {
             return $"system identity set name= { identity } ;";

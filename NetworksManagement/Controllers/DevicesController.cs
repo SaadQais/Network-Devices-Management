@@ -45,7 +45,7 @@ namespace NetworksManagement.Controllers
             return View(devices);
         }
 
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, string message)
         {
             if (id == null)
             {
@@ -59,6 +59,7 @@ namespace NetworksManagement.Controllers
                 return NotFound();
             }
 
+            ViewBag.Message = message;
             return View(DeviceVM);
         }
 

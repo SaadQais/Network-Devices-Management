@@ -4,67 +4,139 @@
     ViewData["Title"] = "Details";
 }
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header card-header-primary">
-                    <div class="row">
-                        <div class="col-6">
-                            <h3 class="card-title ">Device Details</h3>
-                        </div>
+@Html.Hidden("message", (string)ViewBag.Message)
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header card-header-primary">
+                <div class="row">
+                    <div class="col-6">
+                        <h3 class="card-title ">Device Details</h3>
                     </div>
-                    <br />
                 </div>
                 <br />
-                <div class="card-body">
-                    <div class="p-4  border rounded row">
-                        <input type="hidden" asp-for="Device.Id" />
+            </div>
+            <br />
+            <div class="card-body">
+                <div class="p-4  border rounded row">
+                    <input type="hidden" asp-for="Device.Id" />
 
-                        <div class="col-8">
-                            <div class="form-group row">
-                                <div class="col-md-4">
-                                    <label asp-for="Device.Name"></label>
-                                </div>
-                                <div class="col-md-8">
-                                    <input asp-for="Device.Name" disabled class="form-control" />
-                                </div>
+                    <div class="col-8">
+                        <div class="form-group row">
+                            <div class="col-md-4">
+                                <label asp-for="Device.Name"></label>
                             </div>
-
-                            <div class="form-group row">
-                                <div class="col-md-4">
-                                    <label asp-for="Device.ModelId"></label>
-                                </div>
-                                <div class="col-md-8">
-                                    <input asp-for="Device.Model.Name" disabled class="form-control" />
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <div class="col-md-4">
-                                    <label asp-for="Device.Group"></label>
-                                </div>
-                                <div class="col-md-8">
-                                    <input asp-for="Device.Group.Name" disabled class="form-control" />
-                                </div>
-                            </div>
-
-                            
-                            <div class="form-group">
-                                <a asp-action="Edit" asp-route-id="@Model.Device.Id" class="btn btn-info">Edit</a>
-                                <a asp-action="Index" class="btn  btn-success">Back To List</a>
+                            <div class="col-md-8">
+                                <input asp-for="Device.Name" disabled class="form-control" />
                             </div>
                         </div>
 
-                        <div class="col-2 offset-2">
-                            <a asp-action="AutoUpdate" asp-controller="Tools" asp-route-id="@Model.Device.Id" class="btn btn-block btn-light">
-                                <i class="material-icons">update</i> &nbsp; Update</a>
-                            <a asp-action="Backup" asp-controller="Tools" asp-route-id="@Model.Device.Id" class="btn btn-block btn-light">
-                                <i class="material-icons">backup</i> &nbsp; Backup
-                            </a>
+                        <div class="form-group row">
+                            <div class="col-md-4">
+                                <label asp-for="Device.ModelId"></label>
+                            </div>
+                            <div class="col-md-8">
+                                <input asp-for="Device.Model.Name" disabled class="form-control" />
+                            </div>
                         </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-4">
+                                <label asp-for="Device.Group"></label>
+                            </div>
+                            <div class="col-md-8">
+                                <input asp-for="Device.Group.Name" disabled class="form-control" />
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <a asp-action="Edit" asp-route-id="@Model.Device.Id" class="btn btn-info">Edit</a>
+                            <a asp-action="Index" class="btn  btn-success">Back To List</a>
+                        </div>
+                    </div>
+
+                    <div class="col-2 offset-2">
+                        <a asp-action="AutoUpdate" asp-controller="Tools" asp-route-id="@Model.Device.Id" class="btn btn-block btn-light">
+                            <i class="material-icons">update</i> &nbsp; Update
+                        </a>
+                        <a asp-action="Backup" asp-controller="Tools" asp-route-id="@Model.Device.Id" class="btn btn-block btn-light">
+                            <i class="material-icons">backup</i> &nbsp; Backup
+                        </a>
+                        <a href="#" data-toggle="modal" data-target="#accountModal" rel="tooltip" class="btn btn-block btn-light">
+                            <i class="material-icons">account_box</i>&nbsp; Add User
+                        </a>
                     </div>
                 </div>
             </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="accountModal" tabindex="-1" role="dialog" aria-labelledby="accountModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form asp-controller="Tools" asp-action="DeviceUser" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="terminalModalLabel">Terminal</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input value="@Model.Device.Id" type="hidden" id="deviceId-input" name="deviceId" />
+                    <div class="row">
+                        <div class="col-4">
+                            <input type="text" class="form-control" id="username" name="username" required placeholder="Username" />
+                        </div>
+                        <div class="col-4">
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Password" />
+                        </div>
+                        <div class="col-4">
+                            <select name="group" class="form-control">
+                                <option value="full">Full</option>
+                                <option value="read">Read</option>
+                                <option value="write">Write</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" id="AddAccountBtn" class="btn btn-primary">Add</button>
+                </div>
+            </form>
 
         </div>
     </div>
+</div>
+
+@section Scripts
+{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+    <script>
+        var deviceId = 0;
+        $(document).ready(function () {
+            if ($('#message').val()) {
+                showNotification('top','right')
+            }
+
+            function showNotification(from, align){
+              $.notify({
+                  icon: "add_alert",
+                  message: $('#message').val()
+
+              },{
+                  type: 'success',
+                  timer: 4000,
+                  placement: {
+                      from: from,
+                      align: align
+                  }
+              });
+            }
+        });
+    </script>
+}

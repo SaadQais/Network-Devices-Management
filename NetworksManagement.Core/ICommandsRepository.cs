@@ -7,10 +7,11 @@ namespace NetworksManagement.Core
 {
     public interface ICommandsRepository
     {
-        public List<string> GetCmdList(Device device);
-        public string RunAutoUpdate();
-        public string GetDeviceVersion();
-        public string GetDeviceUptime();
-        public List<string> GetBackupScript(Device device);
+        List<string> GetCmdList(Device device);
+        string RunAutoUpdate();
+        string GetDeviceVersion();
+        string GetDeviceUptime();
+        string AddDeviceUser(string name, string group, string password);
+        List<string> GetBackupScript(Device device);
     }
 }

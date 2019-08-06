@@ -174,5 +174,22 @@ namespace NetworksManagement.Controllers.Api
 
             return RedirectToAction("Index", "Devices", new { message = result });
         }
+
+        [HttpPost]
+        public async Task<IActionResult> DeviceUser(string username, string group ,string password, int deviceId)
+        {
+            var deviceFromDb = await _devicesRepository.GetAsync(deviceId);
+
+            if (deviceFromDb == null)
+                return NotFound();
+
+            (bool, string) result = _serviceAccessor("M").ExecuteSSHCommand(deviceFromDb,
+                _commandsRepository.AddDeviceUser(username, group, password), "admin", "");
+
+            if (result.Item1 == true)
+                result.Item2 = "User added successfully";
+
+            return RedirectToAction("Details", "Devices", new { id = deviceFromDb.Id, message = result.Item2 });
+        }
     }
 }
