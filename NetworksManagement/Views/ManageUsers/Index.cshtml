@@ -1,0 +1,84 @@
+﻿@model IEnumerable<NetworksManagement.Data.Models.ApplicationUser>
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<br />
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header card-header-primary">
+                <div class="row">
+                    <div class="col-6">
+                        <h3 class="card-title ">Users List</h3>
+                    </div>
+                    <div class="col-6 pull-right">
+                        <div class="text-right">
+                            <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-info"><i class="material-icons">add</i> &nbsp; New User</a>
+                        </div>
+                    </div>
+                </div>
+                <br />
+            </div>
+            <br />
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class=" text-primary">
+                            <tr>
+                                <th>@Html.DisplayNameFor(m => m.Name)</th>
+                                <th>@Html.DisplayNameFor(m => m.Email)</th>
+                                <th>@Html.DisplayNameFor(m => m.PhoneNumber)</th>
+                                <th>Disabled</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@Html.DisplayFor(m => item.Name)</td>
+                                    <td>@Html.DisplayFor(m => item.Email)</td>
+                                    <td>@Html.DisplayFor(m => item.PhoneNumber)</td>
+                                    @if (item.LockoutEnd != null || item.LockoutEnd > DateTime.Now)
+                                    {
+                                        <td><label>Disabled</label></td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                        </td>
+                                    }
+
+                                    @if (item.LockoutEnd == null || item.LockoutEnd <= DateTime.Now)
+                                    {
+                                        <td>
+                                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">
+                                                <i class="material-icons">edit</i> Edit &nbsp; &nbsp; &nbsp;
+                                            </a>
+                                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">
+                                                <i class="material-icons">delete</i> Delete
+                                            </a>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            <a asp-action="Enable" asp-route-id="@item.Id" class="btn btn-success">
+                                                <i class="material-icons">autorenew</i> Enable
+                                            </a>
+                                        </td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

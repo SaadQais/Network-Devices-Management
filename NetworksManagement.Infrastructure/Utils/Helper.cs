@@ -25,6 +25,7 @@ namespace NetworksManagement.Infrastructure.Utils
             return interfaces;
         }
 
-
+        public const string Admin = "Admin";
+        public const string User = "User";
     }
 }

@@ -17,5 +17,6 @@ namespace NetworksManagement.Data.Models
 
         public virtual ICollection<LocationsGroups> LocationsGroups { get; set; }
         public virtual ICollection<Device> Devices { get; set; }
+        public virtual ICollection<ApplicationUserGroups> ApplicationUserGroups { get; set; }
     }
 }

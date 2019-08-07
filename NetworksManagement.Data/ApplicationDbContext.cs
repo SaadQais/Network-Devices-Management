@@ -25,6 +25,7 @@ namespace NetworksManagement.Data
         public DbSet<Location> Locations { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<LocationsGroups> LocationsGroups { get; set; }
+        public DbSet<ApplicationUserGroups> ApplicationUserGroups { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Device> Devices { get; set; }
         public DbSet<Interface> Interfaces { get; set; }
@@ -45,6 +46,19 @@ namespace NetworksManagement.Data
 
                 entity.HasOne(d => d.Group)
                     .WithMany(p => p.LocationsGroups)
+                    .HasForeignKey(d => d.GroupId);
+            });
+
+            modelBuilder.Entity<ApplicationUserGroups>(entity =>
+            {
+                entity.HasKey(e => new { e.UserId, e.GroupId });
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.ApplicationUserGroups)
+                    .HasForeignKey(d => d.UserId);
+
+                entity.HasOne(d => d.Group)
+                    .WithMany(p => p.ApplicationUserGroups)
                     .HasForeignKey(d => d.GroupId);
             });
         }
