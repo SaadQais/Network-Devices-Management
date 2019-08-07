@@ -1,57 +1,54 @@
-﻿@if (!User.Identity.IsAuthenticated)
-{
-    <div class="sidebar" data-color="purple" data-background-color="white" data-image="../../creative-tim/assets/img/sidebar-3.jpg">
-        
-        <div class="logo">
-            <a href="#" class="simple-text logo-normal">
-                Networks Management
-            </a>
-        </div>
-        <div class="sidebar-wrapper">
-            <ul class="nav">
-                <li class="nav-item @(ViewBag.Current == "Home" ? "active" : "")">
-                    <a class="nav-link" asp-controller="Home" asp-action="Index">
-                        <i class="material-icons">dashboard</i>
-                        <p>Dashboard</p>
-                    </a>
-                </li>
-                <li class="nav-item @(ViewBag.Current == "ManageUsers" ? "active" : "")">
-                    <a class="nav-link" asp-controller="ManageUsers" asp-action="Index">
-                        <i class="material-icons">group</i>
-                        <p>Users</p>
-                    </a>
-                </li>
-                <li class="nav-item @(ViewBag.Current == "Locations" ? "active" : "")">
-                    <a class="nav-link" asp-controller="Locations" asp-action="Index">
-                        <i class="material-icons">my_location</i>
-                        <p>Locations</p>
-                    </a>
-                </li>
-                <li class="nav-item @(ViewBag.Current == "Groups" ? "active" : "")">
-                    <a class="nav-link" asp-controller="Groups" asp-action="Index">
-                        <i class="material-icons">group_work</i>
-                        <p>Groups</p>
-                    </a>
-                </li>
-                <li class="nav-item @(ViewBag.Current == "Categories" ? "active" : "")">
-                    <a class="nav-link" asp-controller="Categories" asp-action="Index">
-                        <i class="material-icons">category</i>
-                        <p>Categories</p>
-                    </a>
-                </li>
-                <li class="nav-item @(ViewBag.Current == "Models" ? "active" : "")">
-                    <a class="nav-link" asp-controller="Models" asp-action="Index">
-                        <i class="material-icons">device_hub</i>
-                        <p>Models</p>
-                    </a>
-                </li>
-                <li class="nav-item @(ViewBag.Current == "Devices" ? "active" : "")">
-                    <a class="nav-link" asp-controller="Devices" asp-action="Index">
-                        <i class="material-icons">devices</i>
-                        <p>Devices</p>
-                    </a>
-                </li>
-            </ul>
-        </div>
+﻿<div class="sidebar" data-color="purple" data-background-color="white" data-image="../../creative-tim/assets/img/sidebar-3.jpg">
+
+    <div class="logo">
+        <a href="#" class="simple-text logo-normal">
+            Networks Management
+        </a>
     </div>
-}
+    <div class="sidebar-wrapper">
+        <ul class="nav">
+            <li class="nav-item @(ViewBag.Current == "Home" ? "active" : "")">
+                <a class="nav-link" asp-controller="Home" asp-action="Index">
+                    <i class="material-icons">dashboard</i>
+                    <p>Dashboard</p>
+                </a>
+            </li>
+            <li class="nav-item @(ViewBag.Current == "ManageUsers" ? "active" : "")">
+                <a class="nav-link" asp-controller="ManageUsers" asp-action="Index">
+                    <i class="material-icons">group</i>
+                    <p>Users</p>
+                </a>
+            </li>
+            <li class="nav-item @(ViewBag.Current == "Locations" ? "active" : "")">
+                <a class="nav-link" asp-controller="Locations" asp-action="Index">
+                    <i class="material-icons">my_location</i>
+                    <p>Locations</p>
+                </a>
+            </li>
+            <li class="nav-item @(ViewBag.Current == "Groups" ? "active" : "")">
+                <a class="nav-link" asp-controller="Groups" asp-action="Index">
+                    <i class="material-icons">group_work</i>
+                    <p>Groups</p>
+                </a>
+            </li>
+            <li class="nav-item @(ViewBag.Current == "Categories" ? "active" : "")">
+                <a class="nav-link" asp-controller="Categories" asp-action="Index">
+                    <i class="material-icons">category</i>
+                    <p>Categories</p>
+                </a>
+            </li>
+            <li class="nav-item @(ViewBag.Current == "Models" ? "active" : "")">
+                <a class="nav-link" asp-controller="Models" asp-action="Index">
+                    <i class="material-icons">device_hub</i>
+                    <p>Models</p>
+                </a>
+            </li>
+            <li class="nav-item @(ViewBag.Current == "Devices" ? "active" : "")">
+                <a class="nav-link" asp-controller="Devices" asp-action="Index">
+                    <i class="material-icons">devices</i>
+                    <p>Devices</p>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

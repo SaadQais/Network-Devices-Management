@@ -21,22 +21,24 @@
 
 <body class="">
     <div class="wrapper ">
-
-        <!-- Sidebar -->
-        <partial name="_SidebarPartial" />
-        <!-- End Sidebar -->
+        @if (User.Identity.IsAuthenticated)
+        {
+            <!-- Sidebar -->
+            <partial name="_SidebarPartial" />
+            <!-- End Sidebar -->
+        }
         <div class="main-panel">
             <!-- Navbar -->
-            @if (!User.Identity.IsAuthenticated)
+            @if (User.Identity.IsAuthenticated)
             {
                 <partial name="_NavbarPartial" />
             }
             <!-- End Navbar -->
-        <div class="content">
-            <div class="container-fluid">
-                @RenderBody()
+            <div class="content">
+                <div class="container-fluid">
+                    @RenderBody()
+                </div>
             </div>
-        </div>
             <footer class="footer">
                 <div class="container-fluid">
                     <div class="copyright">

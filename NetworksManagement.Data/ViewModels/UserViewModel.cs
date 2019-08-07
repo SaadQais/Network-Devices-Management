@@ -9,5 +9,6 @@ namespace NetworksManagement.Data.ViewModels
     {
         public ApplicationUser ApplicationUser { get; set; }
         public List<Group> Groups { get; set; }
+        public List<ApplicationUserGroups> SelectedGroups { get; set; }
     }
 }

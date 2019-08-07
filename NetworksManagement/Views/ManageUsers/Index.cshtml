@@ -55,7 +55,7 @@
 
                                     @if (item.LockoutEnd == null || item.LockoutEnd <= DateTime.Now)
                                     {
-                                        <td>
+                                        <td class="pull-right">
                                             <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">
                                                 <i class="material-icons">edit</i> Edit &nbsp; &nbsp; &nbsp;
                                             </a>
@@ -66,7 +66,7 @@
                                     }
                                     else
                                     {
-                                        <td>
+                                        <td class="pull-right">
                                             <a asp-action="Enable" asp-route-id="@item.Id" class="btn btn-success">
                                                 <i class="material-icons">autorenew</i> Enable
                                             </a>
