@@ -9,6 +9,7 @@ using NetworksManagement.Infrastructure.Utils;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using X.PagedList;
 
 namespace NetworksManagement.Controllers
 {
@@ -39,7 +40,7 @@ namespace NetworksManagement.Controllers
             };
         }
 
-        public async Task<IActionResult> Index(string message)
+        public async Task<IActionResult> Index(string message, int? page)
         {
             var devices =  _devicesRepository.GetAll();
 
@@ -54,7 +55,9 @@ namespace NetworksManagement.Controllers
             ViewBag.Message = message;
             ViewBag.Current = "Devices";
 
-            return View(await devices.ToListAsync());
+            int pageSize = 15;
+
+            return View(await devices.ToPagedListAsync(page ?? 1, pageSize));
         }
 
         public async Task<IActionResult> Details(int? id, string message)

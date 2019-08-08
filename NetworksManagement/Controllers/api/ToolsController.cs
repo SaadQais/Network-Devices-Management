@@ -50,7 +50,7 @@ namespace NetworksManagement.Controllers.Api
 
             string subnet = range.Split('/')[1];
 
-            foreach (var ip in range)
+            foreach (var ip in IPAddressRange.Parse(group.IpRange))
             {
                 if (!interfaces.Any(i => i.Address.Contains(ip.ToString())))
                     availableList.Add(ip.ToString() + "/" + subnet);
