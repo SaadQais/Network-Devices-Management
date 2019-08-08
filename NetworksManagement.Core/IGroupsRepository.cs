@@ -9,11 +9,12 @@ namespace NetworksManagement.Core
 {
     public interface IGroupsRepository
     {
-        public IQueryable<Group> GetAll();
-        public Task AddAsync(Group group, int[] locations);
-        public Task<Group> GetAsync(int? groupId);
-        public Task UpdateAsync(Group group, int[] locations);
-        public Task RemoveAsync(Group group);
-        public bool Any(int groupId);
+        IQueryable<Group> GetAll();
+        Task AddAsync(Group group, int[] locations);
+        Task<Group> GetAsync(int? groupId);
+        Task UpdateAsync(Group group, int[] locations);
+        Task RemoveAsync(Group group);
+        bool Any(int groupId);
+        IEnumerable<Group> GetUserGroups(string userId);
     }
 }

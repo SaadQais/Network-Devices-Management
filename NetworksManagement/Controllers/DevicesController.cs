@@ -1,14 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NetworksManagement.Core;
 using NetworksManagement.Data.Models;
 using NetworksManagement.Data.ViewModels;
 using NetworksManagement.Extensions;
+using NetworksManagement.Infrastructure.Utils;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace NetworksManagement.Controllers
 {
+    [Authorize]
     public class DevicesController : Controller
     {
         private readonly IDevicesRepository _devicesRepository;
@@ -37,12 +41,20 @@ namespace NetworksManagement.Controllers
 
         public async Task<IActionResult> Index(string message)
         {
-            var devices = await _devicesRepository.GetAll().ToListAsync();
+            var devices =  _devicesRepository.GetAll();
+
+            if (!User.IsInRole(Helper.Admin))
+            {
+                var userId = Helper.GetUserId(this.User);
+                var userGroups = _groupsRepository.GetUserGroups(userId);
+
+                devices = devices.Where(d => userGroups.Any(g => g.Id == d.GroupId));
+            }
 
             ViewBag.Message = message;
             ViewBag.Current = "Devices";
 
-            return View(devices);
+            return View(await devices.ToListAsync());
         }
 
         public async Task<IActionResult> Details(int? id, string message)

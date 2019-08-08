@@ -4,6 +4,7 @@ using NetworksManagement.Data;
 using NetworksManagement.Data.Models;
 using NetworksManagement.Infrastructure.Extensions;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -77,6 +78,13 @@ namespace NetworksManagement.Infrastructure
         {
             _context.Groups.Remove(group);
             await _context.SaveChangesAsync();
+        }
+
+        public IEnumerable<Group> GetUserGroups(string userId)
+        {
+            var groups = _context.ApplicationUserGroups.Where(a => a.UserId == userId).Select(g => g.Group);
+
+            return groups;
         }
     }
 }

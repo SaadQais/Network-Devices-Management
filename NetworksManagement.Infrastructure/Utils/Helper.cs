@@ -2,6 +2,7 @@
 using NetworksManagement.Data.Models;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Text;
 
 namespace NetworksManagement.Infrastructure.Utils
@@ -23,6 +24,14 @@ namespace NetworksManagement.Infrastructure.Utils
             }
 
             return interfaces;
+        }
+
+        public static string GetUserId(ClaimsPrincipal user)
+        {
+            var claimsIdentity = (ClaimsIdentity)user.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            return claim.Value;
         }
 
         public const string Admin = "Admin";
