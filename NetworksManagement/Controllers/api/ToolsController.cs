@@ -71,7 +71,8 @@ namespace NetworksManagement.Controllers.Api
             {
                 using (var ping = new Ping())
                 {
-                    PingReply pingReply = await ping.SendPingAsync(ethernet.Address, 1000);
+                    string ip = (ethernet.Address.Contains("/")) ? ethernet.Address.Split('/')[0] : ethernet.Address;
+                    PingReply pingReply = await ping.SendPingAsync(ip, 1000);
 
                     if (pingReply.Status == IPStatus.Success)
                         return true;
