@@ -61,8 +61,7 @@
 #*.PDF   diff=astextplain
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
-*.cs linguist-detectable=true
+*.cs linguist-language=csharp
 *.csharp linguist-detectable=true  
-*.js linguist-detectable=false  
-*.html linguist-detectable=false  
+
 *.html linguist-vendored 
