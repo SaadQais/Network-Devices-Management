@@ -3,6 +3,58 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1>Live Updating Chart.js</h1>
+    <div class="row">
+        <div class="col-4"><canvas class="myChart"></canvas></div>
+        <div class="col-4"><canvas class="myChart"></canvas></div>
+        <div class="col-4"><canvas class="myChart"></canvas></div>
+    </div>
+
 </div>
+
+
+@section Scripts
+{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script src="~/js/moment.js"></script>
+    <script src="~/js/Chart.js"></script>
+    <script src="~/js/chartjs-plugin-streaming.js"></script>
+    <script>
+        $(".myChart").each(function () {
+            var chart = new Chart(this, {
+                type: 'line',               // 'line', 'bar', 'bubble' and 'scatter' types are supported
+                data: {
+                    datasets: [{
+                        data: []            // empty at the beginning
+                    }]
+                },
+                options: {
+                    scales: {
+                        xAxes: [{
+                            type: 'realtime',   // x axis will auto-scroll from right to left
+                            realtime: {         // per-axis options
+                                duration: 20000,    // data in the past 20000 ms will be displayed
+                                refresh: 3000,      // onRefresh callback will be called every 1000 ms
+                                delay: 1000,        // delay of 1000 ms, so upcoming values are known before plotting a line
+                               
+                                // a callback to update datasets
+                                onRefresh: function (chart) {
+                                    chart.data.datasets.forEach(function (dataset) {
+                                        dataset.data.push({
+                                            x: Date.now(),
+                                            y: getLatestData()
+                                        });
+                                    });
+                                }
+                            }
+                        }]
+                    }
+                }
+            });
+        });
+
+        function getLatestData() {
+            return Math.random();
+        }
+    </script>
+}
