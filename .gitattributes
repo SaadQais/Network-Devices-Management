@@ -2,6 +2,10 @@
 # Set default behavior to automatically normalize line endings.
 ###############################################################################
 * text=auto
+* linguist-vendored
+*.cs linguist-vendored=false
+
+
 
 ###############################################################################
 # Set default behavior for command prompt diff.
@@ -61,7 +65,3 @@
 #*.PDF   diff=astextplain
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
-*.cs linguist-language=csharp
-*.csharp linguist-detectable=true  
-
-*.html linguist-vendored 
