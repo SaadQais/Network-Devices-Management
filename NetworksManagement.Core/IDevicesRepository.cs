@@ -10,6 +10,7 @@ namespace NetworksManagement.Core
     public interface IDevicesRepository
     {
         public IQueryable<Device> GetAll();
+        public IQueryable<Device> GetAllMonitoring();
         public Task AddAsync(Device device);
         public Task<Device> GetAsync(int? deviceId);
         public Task UpdateAsync(Device device, List<Interface> interfaces = null);

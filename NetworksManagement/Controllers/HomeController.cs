@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using NetworksManagement.Core;
 using NetworksManagement.Data.Models;
 
 namespace NetworksManagement.Controllers
@@ -12,10 +14,19 @@ namespace NetworksManagement.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly IDevicesRepository _devicesRepository;
+       
+        public HomeController(IDevicesRepository devicesRepository)
         {
+            _devicesRepository = devicesRepository;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var devices = await _devicesRepository.GetAllMonitoring().ToListAsync();
+
             ViewBag.Current = "Home";
-            return View();
+            return View(devices);
         }
 
         public IActionResult Privacy()

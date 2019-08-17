@@ -1,16 +1,36 @@
-﻿@{
+﻿@model IEnumerable<NetworksManagement.Data.Models.Device>
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1>Live Updating Chart.js</h1>
-    <div class="row">
-        <div class="col-4"><canvas class="myChart"></canvas></div>
-        <div class="col-4"><canvas class="myChart"></canvas></div>
-        <div class="col-4"><canvas class="myChart"></canvas></div>
+    <div class="text-center">
+        @foreach (var device in Model)
+        {
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">@device.Name</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <canvas height="100" class="myChart" id="@device.Id"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <canvas height="100" class="myChart" id="@device.Id"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
-
-</div>
 
 
 @section Scripts
@@ -21,6 +41,7 @@
     <script src="~/js/chartjs-plugin-streaming.js"></script>
     <script>
         $(".myChart").each(function () {
+            var deviceId = this.id;
             var chart = new Chart(this, {
                 type: 'line',               // 'line', 'bar', 'bubble' and 'scatter' types are supported
                 data: {
@@ -42,7 +63,7 @@
                                     chart.data.datasets.forEach(function (dataset) {
                                         dataset.data.push({
                                             x: Date.now(),
-                                            y: getLatestData()
+                                            y: getLatestData(deviceId)
                                         });
                                     });
                                 }
@@ -53,7 +74,8 @@
             });
         });
 
-        function getLatestData() {
+        function getLatestData(deviceId) {
+            
             return Math.random();
         }
     </script>

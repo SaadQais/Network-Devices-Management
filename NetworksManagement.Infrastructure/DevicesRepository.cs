@@ -36,7 +36,15 @@ namespace NetworksManagement.Infrastructure
 
             return devices;
         }
-         
+
+        public IQueryable<Device> GetAllMonitoring()
+        {
+            var devices = _context.Devices.Where(d => d.IsMonitoring == false).Include(d => d.Model)
+                .Include(d => d.Group).OrderBy(g => g.Name);
+
+            return devices;
+        }
+
         public async Task<Device> GetAsync(int? deviceId)
         {
             var device = await _context.Devices.Include(d => d.Model).Include(d => d.Group).Include(d => d.Interfaces)

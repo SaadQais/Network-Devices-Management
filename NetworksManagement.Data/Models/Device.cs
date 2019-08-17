@@ -29,6 +29,8 @@ namespace NetworksManagement.Data.Models
 
         public DeviceType Type { get; set; }
 
+        public bool IsMonitoring { get; set; }
+
         public virtual ICollection<Interface> Interfaces { get; set; }
     }
 }

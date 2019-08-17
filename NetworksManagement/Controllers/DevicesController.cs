@@ -88,7 +88,7 @@ namespace NetworksManagement.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,GroupId,Type,ModelId")] Device device, List<string> InterfacesNames,
+        public async Task<IActionResult> Create([Bind("Id,Name,GroupId,Type,ModelId,IsMonitoring")] Device device, List<string> InterfacesNames,
             List<string> InterfacesAddresses)
         {
             if (ModelState.IsValid)
@@ -122,7 +122,7 @@ namespace NetworksManagement.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,GroupId,Type,ModelId")] Device device, List<string> InterfacesNames,
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,GroupId,Type,ModelId,IsMonitoring")] Device device, List<string> InterfacesNames,
             List<string> InterfacesAddresses)
         {
             if (id != device.Id)
