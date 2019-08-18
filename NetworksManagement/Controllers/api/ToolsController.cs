@@ -83,6 +83,29 @@ namespace NetworksManagement.Controllers.Api
         }
 
         [HttpGet]
+        public async Task<float> DevicePing(int? id)
+        {
+            var device = await _devicesRepository.GetAsync(id);
+
+            if (device == null)
+                return 0;
+
+            foreach (var ethernet in device.Interfaces)
+            {
+                using (var ping = new Ping())
+                {
+                    string ip = (ethernet.Address.Contains("/")) ? ethernet.Address.Split('/')[0] : ethernet.Address;
+                    PingReply pingReply = await ping.SendPingAsync(ip, 1000);
+
+                    if (pingReply.Status == IPStatus.Success)
+                        return pingReply.RoundtripTime;
+                }
+            }
+
+            return 0;
+        }
+
+        [HttpGet]
         public async Task<IActionResult> DeviceUptime(int? id)
         {
             var device = await _devicesRepository.GetAsync(id);

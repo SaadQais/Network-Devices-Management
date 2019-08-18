@@ -39,7 +39,7 @@ namespace NetworksManagement.Infrastructure
 
         public IQueryable<Device> GetAllMonitoring()
         {
-            var devices = _context.Devices.Where(d => d.IsMonitoring == false).Include(d => d.Model)
+            var devices = _context.Devices.Where(d => d.IsMonitoring == true).Include(d => d.Model)
                 .Include(d => d.Group).OrderBy(g => g.Name);
 
             return devices;
@@ -70,6 +70,7 @@ namespace NetworksManagement.Infrastructure
             deviceFromDb.GroupId = device.GroupId;
             deviceFromDb.Type = device.Type;
             deviceFromDb.Version = device.Version;
+            deviceFromDb.IsMonitoring = device.IsMonitoring;
 
             _context.Update(deviceFromDb);
             await _context.SaveChangesAsync();

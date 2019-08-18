@@ -3,34 +3,23 @@
     ViewData["Title"] = "Home Page";
 }
 
-    <div class="text-center">
+<div class="text-center">
+    <div class="row">
         @foreach (var device in Model)
         {
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title">@device.Name</h5>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="card">
-                                <div class="card-body">
-                                    <canvas height="100" class="myChart" id="@device.Id"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="card">
-                                <div class="card-body">
-                                    <canvas height="100" class="myChart" id="@device.Id"></canvas>
-                                </div>
-                            </div>
-                        </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">@device.Name</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas height="200" class="myChart" id="@device.Id"></canvas>
                     </div>
                 </div>
             </div>
         }
     </div>
+</div>
 
 
 @section Scripts
@@ -40,43 +29,70 @@
     <script src="~/js/Chart.js"></script>
     <script src="~/js/chartjs-plugin-streaming.js"></script>
     <script>
-        $(".myChart").each(function () {
-            var deviceId = this.id;
-            var chart = new Chart(this, {
-                type: 'line',               // 'line', 'bar', 'bubble' and 'scatter' types are supported
-                data: {
-                    datasets: [{
-                        data: []            // empty at the beginning
-                    }]
-                },
-                options: {
-                    scales: {
-                        xAxes: [{
-                            type: 'realtime',   // x axis will auto-scroll from right to left
-                            realtime: {         // per-axis options
-                                duration: 20000,    // data in the past 20000 ms will be displayed
-                                refresh: 3000,      // onRefresh callback will be called every 1000 ms
-                                delay: 1000,        // delay of 1000 ms, so upcoming values are known before plotting a line
-                               
-                                // a callback to update datasets
-                                onRefresh: function (chart) {
-                                    chart.data.datasets.forEach(function (dataset) {
-                                        dataset.data.push({
-                                            x: Date.now(),
-                                            y: getLatestData(deviceId)
-                                        });
-                                    });
-                                }
-                            }
+        var charts = [];
+        $(document).ready(function () {
+            $(".myChart").each(function () {
+                var deviceId = this.id;
+                var chart = new Chart(this, {
+                    type: 'line',
+                    data: {
+                        datasets: [{
+                            label: 'Ping',
+                            data: []
                         }]
+                    },
+                    options: {
+                        legend: {
+                            display: false
+                        },
+                        tooltips: {
+                            enabled: false
+                        },
+                        scales: {
+                            yAxes: [{
+                                display: true,
+                                ticks: {
+                                    min: 0,
+                                    max: 200
+                                }
+                            }],
+                            xAxes: [{
+                                type: 'realtime',   // x axis will auto-scroll from right to left
+                                realtime: {         // per-axis options
+                                    duration: 20000,    // data in the past 20000 ms will be displayed
+                                    refresh: 3000,      // onRefresh callback will be called every 1000 ms
+                                    delay: 1000,        // delay of 1000 ms, so upcoming values are known before plotting a line
+                                    lazy: true,
+                                }
+                            }]
+                        }
                     }
-                }
+                });
+
+                charts.push({ deviceId, chart });
             });
+
+            setInterval(function () {
+                getLatestData();
+            }, 5000);
         });
 
-        function getLatestData(deviceId) {
-            
-            return Math.random();
+
+        function getLatestData() {
+            $(charts).each(function () {
+                var myChart = this.chart;
+                $.ajax({
+                    url: "https://localhost:44302/Tools/DevicePing/" + this.deviceId
+                }).then(function (data) {
+                    myChart.chart.data.datasets.forEach((dataset) => {
+                        dataset.data.push({
+                            x: Date.now(),
+                            y: data
+                        });
+                    });
+                    myChart.chart.update();
+                });
+            });
         }
     </script>
 }
