@@ -49,48 +49,36 @@
                             enabled: false
                         },
                         scales: {
-                            yAxes: [{
-                                display: true,
-                                ticks: {
-                                    min: 0,
-                                    max: 200
-                                }
-                            }],
+
                             xAxes: [{
                                 type: 'realtime',   // x axis will auto-scroll from right to left
                                 realtime: {         // per-axis options
                                     duration: 20000,    // data in the past 20000 ms will be displayed
-                                    refresh: 3000,      // onRefresh callback will be called every 1000 ms
-                                    delay: 1000,        // delay of 1000 ms, so upcoming values are known before plotting a line
-                                    lazy: true,
+                                    refresh: 2000,
+                                    // a callback to update datasets
+                                    onRefresh: function (chart) {
+                                        var data = updateChartData(chart, deviceId);
+                                    }
                                 }
                             }]
                         }
                     }
                 });
-
-                charts.push({ deviceId, chart });
             });
-
-            setInterval(function () {
-                getLatestData();
-            }, 5000);
         });
 
-
-        function getLatestData() {
-            $(charts).each(function () {
-                var myChart = this.chart;
-                $.ajax({
-                    url: "https://localhost:44302/Tools/DevicePing/" + this.deviceId
-                }).then(function (data) {
-                    myChart.chart.data.datasets.forEach((dataset) => {
-                        dataset.data.push({
-                            x: Date.now(),
-                            y: data
-                        });
+        function updateChartData(chart, deviceId) {
+            $.ajax({
+                url: "https://localhost:44302/Tools/DevicePing/" + deviceId
+            }).then(function (data) {
+                chart.data.datasets.forEach((dataset) => {
+                    dataset.data.push({
+                        x: Date.now(),
+                        y: data
                     });
-                    myChart.chart.update();
+                });
+                chart.update({
+                    preservation: true
                 });
             });
         }

@@ -88,7 +88,7 @@ namespace NetworksManagement.Controllers.Api
             var device = await _devicesRepository.GetAsync(id);
 
             if (device == null)
-                return 0;
+                return -1;
 
             foreach (var ethernet in device.Interfaces)
             {
@@ -102,7 +102,7 @@ namespace NetworksManagement.Controllers.Api
                 }
             }
 
-            return 0;
+            return -1;
         }
 
         [HttpGet]
