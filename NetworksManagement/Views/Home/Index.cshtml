@@ -13,7 +13,7 @@
                         <h5 class="card-title">@device.Name</h5>
                     </div>
                     <div class="card-body">
-                        <canvas height="200" class="myChart" id="@device.Id"></canvas>
+                        <canvas height="200" class="pingChart" id="@device.Id"></canvas>
                     </div>
                 </div>
             </div>
@@ -31,7 +31,7 @@
     <script>
         var charts = [];
         $(document).ready(function () {
-            $(".myChart").each(function () {
+            $(".pingChart").each(function () {
                 var deviceId = this.id;
                 var chart = new Chart(this, {
                     type: 'line',
