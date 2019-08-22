@@ -20,18 +20,21 @@ namespace NetworksManagement.Controllers
         private readonly IGroupsRepository _groupsRepository;
         private readonly IInterfacesRepository _interfacesRepository;
         private readonly IModelRepository _modelRepository;
+        private readonly IDeviceAccountsRepository _accountsRepository;
         public readonly IHelper _helper;
 
         [BindProperty]
         public DeviceViewModel DeviceVM { get; set; }
 
         public DevicesController(IDevicesRepository devicesRepository, IGroupsRepository groupsRepository,
-            IInterfacesRepository interfacesRepository, IModelRepository modelRepository, IHelper helper)
+            IInterfacesRepository interfacesRepository, IModelRepository modelRepository,
+            IDeviceAccountsRepository accountsRepository, IHelper helper)
         {
             _devicesRepository = devicesRepository;
             _groupsRepository = groupsRepository;
             _interfacesRepository = interfacesRepository;
             _modelRepository = modelRepository;
+            _accountsRepository = accountsRepository;
             _helper = helper;
 
             DeviceVM = new DeviceViewModel
@@ -73,6 +76,8 @@ namespace NetworksManagement.Controllers
             {
                 return NotFound();
             }
+
+            DeviceVM.Accounts = _accountsRepository.GetDeviceAccounts(id.GetValueOrDefault()).ToList();
 
             ViewBag.Message = message;
             return View(DeviceVM);

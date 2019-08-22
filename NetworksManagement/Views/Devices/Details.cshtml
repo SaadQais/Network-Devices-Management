@@ -54,7 +54,7 @@
                                 <label asp-for="Device.IsMonitoring"></label>
                             </div>
                             <div class="col-md-8">
-                                <input asp-for="Device.IsMonitoring" disabled  />
+                                <input asp-for="Device.IsMonitoring" disabled />
                             </div>
                         </div>
 
@@ -83,8 +83,8 @@
     </div>
 </div>
 
-<div class="modal fade" id="accountModal" tabindex="-1" role="dialog" aria-labelledby="accountModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade bd-example-modal-lg" id="accountModal" tabindex="-1" role="dialog" aria-labelledby="accountModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <form asp-controller="Tools" asp-action="DeviceUser" method="post">
                 <div class="modal-header">
@@ -96,24 +96,62 @@
                 <div class="modal-body">
                     <input value="@Model.Device.Id" type="hidden" id="deviceId-input" name="deviceId" />
                     <div class="row">
-                        <div class="col-4">
+                        <div class="col-3">
                             <input type="text" class="form-control" id="username" name="username" required placeholder="Username" />
                         </div>
-                        <div class="col-4">
+                        <div class="col-3">
                             <input type="password" class="form-control" id="password" name="password" placeholder="Password" />
                         </div>
-                        <div class="col-4">
-                            <select name="group" class="form-control">
+                        <div class="col-3">
+                            <select name="group" class="form-control" style="height:38px">
                                 <option value="full">Full</option>
                                 <option value="read">Read</option>
                                 <option value="write">Write</option>
                             </select>
                         </div>
+                        <div class="col-1"></div>
+                        <div class="col-2">
+                            <button type="submit" id="AddAccountBtn" class="btn btn-primary">Add</button>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="row">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead class=" text-primary">
+                                        <tr>
+                                            <th>@Html.DisplayNameFor(m => m.Accounts.FirstOrDefault().UserName)</th>
+                                            <th>@Html.DisplayNameFor(m => m.Accounts.FirstOrDefault().Password)</th>
+                                            <th>@Html.DisplayNameFor(m => m.Accounts.FirstOrDefault().Permission)</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        @foreach (var item in Model.Accounts)
+                                    {
+                                        <tr>
+                                            <td>@Html.DisplayFor(m => item.UserName)</td>
+                                            <td>@Html.DisplayFor(m => item.Password)</td>
+                                            <td>@Html.DisplayFor(m => item.Permission.ToString())</td>
+                                            <td class="td-actions text-right">
+                                                <a href="#" rel="tooltip" class="btn btn-danger">
+                                                    <i class="material-icons">close</i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" id="AddAccountBtn" class="btn btn-primary">Add</button>
                 </div>
             </form>
 
@@ -129,22 +167,22 @@
         var deviceId = 0;
         $(document).ready(function () {
             if ($('#message').val()) {
-                showNotification('top','right')
+                showNotification('top', 'right')
             }
 
-            function showNotification(from, align){
-              $.notify({
-                  icon: "add_alert",
-                  message: $('#message').val()
+            function showNotification(from, align) {
+                $.notify({
+                    icon: "add_alert",
+                    message: $('#message').val()
 
-              },{
-                  type: 'success',
-                  timer: 4000,
-                  placement: {
-                      from: from,
-                      align: align
-                  }
-              });
+                }, {
+                        type: 'success',
+                        timer: 4000,
+                        placement: {
+                            from: from,
+                            align: align
+                        }
+                    });
             }
         });
     </script>

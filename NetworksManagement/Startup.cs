@@ -55,6 +55,7 @@ namespace NetworksManagement
             services.AddTransient<ICategoriesRepository, CategoriesRepository>();
             services.AddTransient<IModelRepository, ModelRepository>();
             services.AddTransient<IHelper, Helper>();
+            services.AddTransient<IDeviceAccountsRepository, DeviceAccountsRepository>();
 
             services.AddTransient<MikrotikTools>();
             services.AddTransient<CisscoTools>();

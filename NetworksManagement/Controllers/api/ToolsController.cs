@@ -19,17 +19,19 @@ namespace NetworksManagement.Controllers.Api
         private readonly IGroupsRepository _groupsRepository;
         private readonly IInterfacesRepository _interfacesRepository;
         private readonly ICommandsRepository _commandsRepository;
+        private readonly IDeviceAccountsRepository _accountsRepository;
         private readonly IHelper _helper;
         private readonly Func<string, IDeviceTools> _serviceAccessor;
 
         public ToolsController(IDevicesRepository devicesRepository, IGroupsRepository groupsRepository,
-            ICommandsRepository commandsRepository, IInterfacesRepository interfacesRepository, 
-            Func<string, IDeviceTools> serviceAccessor, IHelper helper)
+            ICommandsRepository commandsRepository, IInterfacesRepository interfacesRepository,
+            IDeviceAccountsRepository accountsRepository, Func<string, IDeviceTools> serviceAccessor, IHelper helper)
         {
             _devicesRepository = devicesRepository;
             _groupsRepository = groupsRepository;
             _interfacesRepository = interfacesRepository;
             _commandsRepository = commandsRepository;
+            _accountsRepository = accountsRepository;
             _helper = helper;
             _serviceAccessor = serviceAccessor;
         }
@@ -211,7 +213,18 @@ namespace NetworksManagement.Controllers.Api
                 _commandsRepository.AddDeviceUser(username, group, password), "admin", "");
 
             if (result.Item1 == true)
+            {
                 result.Item2 = "User added successfully";
+
+                Enum.TryParse("Active", out Permissions permission);
+                await _accountsRepository.AddAccountAsync(new DeviceAccount
+                {
+                    DeviceId = deviceId,
+                    UserName = username,
+                    Password = password,
+                    Permission = permission
+                });
+            }
 
             return RedirectToAction("Details", "Devices", new { id = deviceFromDb.Id, message = result.Item2 });
         }
