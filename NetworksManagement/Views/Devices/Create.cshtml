@@ -68,7 +68,7 @@
                                     <label asp-for="Device.IsMonitoring"></label>
                                 </div>
                                 <div class="col-md-5">
-                                    <input asp-for="Device.IsMonitoring" class="form-control" />
+                                    <input asp-for="Device.IsMonitoring" />
                                 </div>
                                 <span asp-validation-for="Device.IsMonitoring" class="text-danger"></span>
                             </div>
@@ -147,7 +147,7 @@
     function getAvailableAddresses() {
         let dropdown = $('#ipaddress-dropdown');
         let groupId = $('#Device_GroupId option:selected').val();
-        const url = "https://localhost:44302/Tools/GetAvailableAdresses/" + groupId;
+        const url = abstractUrl + "/Tools/GetAvailableAdresses/" + groupId;
 
         dropdown.empty();
 

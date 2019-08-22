@@ -134,7 +134,7 @@
                     let id = $('input[type=hidden]', $(this).closest("td")).val();
                     let statuslabel = $(this);
 
-                    const url = "https://localhost:44302/Tools/DeviceStatus/" + id;
+                    const url = abstractUrl + "/Tools/DeviceStatus/" + id;
 
                     $.getJSON(url, function (data) {
                         if (data == true) {
@@ -151,7 +151,7 @@
                     let id = $('input[type=hidden]', $(this).closest("td")).val();
                     let uptimelabel = $(this);
 
-                    let uptimeurl = "https://localhost:44302/Tools/DeviceUptime/" + id;
+                    let uptimeurl = abstractUrl + "/Tools/DeviceUptime/" + id;
 
                     $.getJSON(uptimeurl, function (data) {
                         uptimelabel.html(data);
@@ -170,7 +170,7 @@
             })
 
             $('#runCommandBtn').click(function () {
-                const url = "https://localhost:44302/Tools/RunCommand/";
+                const url = abstractUrl + "/Tools/RunCommand/";
                 var commandText = $('#message-text').val();
                 var user = $('#username').val();
                 var pass = $('#password').val();

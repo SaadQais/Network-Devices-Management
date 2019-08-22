@@ -69,7 +69,7 @@
 
         function updateChartData(chart, deviceId) {
             $.ajax({
-                url: "https://localhost:44302/Tools/DevicePing/" + deviceId
+                url: abstractUrl + "/Tools/DevicePing/" + deviceId
             }).then(function (data) {
                 chart.data.datasets.forEach((dataset) => {
                     dataset.data.push({

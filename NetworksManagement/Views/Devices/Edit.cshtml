@@ -166,7 +166,7 @@
         function getAvailableAddresses() {
             let dropdown = $('#ipaddress-dropdown');
             let groupId = $('#Device_GroupId option:selected').val();
-            const url = "https://localhost:44302/Tools/GetAvailableAdresses/" + groupId;
+            const url = abstractUrl + "/Tools/GetAvailableAdresses/" + groupId;
 
             dropdown.empty();
 
