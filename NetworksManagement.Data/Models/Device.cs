@@ -32,5 +32,6 @@ namespace NetworksManagement.Data.Models
         public bool IsMonitoring { get; set; }
 
         public virtual ICollection<Interface> Interfaces { get; set; }
+        public virtual ICollection<DeviceAccount> Accounts { get; set; }
     }
 }

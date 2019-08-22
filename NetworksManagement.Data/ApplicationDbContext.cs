@@ -31,6 +31,7 @@ namespace NetworksManagement.Data
         public DbSet<Interface> Interfaces { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<DeviceModel> DeviceModels { get; set; }
+        public DbSet<DeviceAccount> Accounts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
