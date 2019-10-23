@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace NetworksManagement.Services
 {
-    public class DevicesHostedService : IHostedService, IDisposable
+    public class DevicesHostedService : IHostedService
     {
         private Timer _timer;
         public IServiceProvider ServiceProvider { get; }
