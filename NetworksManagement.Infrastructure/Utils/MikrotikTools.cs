@@ -21,7 +21,8 @@ namespace NetworksManagement.Infrastructure.Utils
             {
                 try
                 {
-                    using SshClient ssh = new SshClient(item.Address, username ?? "", password ?? "");
+                    var ipAddress = item.Address.Split('/')[0];
+                    using SshClient ssh = new SshClient(ipAddress, username ?? "", password ?? "");
                     {
                         ssh.Connect();
 

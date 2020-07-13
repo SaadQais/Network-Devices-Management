@@ -42,10 +42,22 @@ namespace NetworksManagement
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 6;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+                options.User.RequireUniqueEmail = true;
+            })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddDefaultTokenProviders();
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = $"/Identity/Account/Login";
+            });
 
             services.AddTransient<ILocationsRepository, LocationsRepository>();
             services.AddTransient<IGroupsRepository, GroupsRepository>();
@@ -74,8 +86,7 @@ namespace NetworksManagement
 
             services.AddHostedService<DevicesHostedService>();
 
-            services.AddControllersWithViews()
-                .AddNewtonsoftJson();
+            services.AddControllersWithViews();
             services.AddRazorPages();
         }
 
@@ -96,8 +107,6 @@ namespace NetworksManagement
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
-            app.UseCookiePolicy();
 
             app.UseRouting();
 
